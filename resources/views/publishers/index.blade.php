@@ -1,31 +1,28 @@
 @extends('layouts.app')
 
-@section('title', "Authoren")
-
 @section('content')
 <header>
-    <h1>Authoren</h1>
+    <h1>Verlage</h1>
 </header>
     <main>
         <table>
             <thead>
                 <tr>
-                    <th>Vorname</th>
-                    <th>Nachname</th>
+                    <th>Name</th>
                 </tr>
             </thead>
             <tbody>
-            @foreach($authors as $author)
+            @foreach($publishers as $publisher)
             <tr>
                 <td>
-                    {{ $author->name }}
-                </td>
-                <td>
-                    {{ $author->first_name }}
+                    {{ $publisher->name }}
                 </td>
             </tr>
             @endforeach
             </tbody>
         </table>
     </main>
+<main>
+
+</main>
 @endsection

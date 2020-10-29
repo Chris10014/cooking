@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Cookbook;
 use App\Models\Author;
+use App\Models\Publisher;
 
-class AuthorController extends Controller
+class CookbookController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,9 +16,9 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        $authors = Author::all();
+        $cookbooks = Cookbook::all();
 
-        return view('authors.index', compact('authors'));
+        return view('cookbooks.index', compact('cookbooks'));
     }
 
     /**
@@ -26,7 +28,9 @@ class AuthorController extends Controller
      */
     public function create()
     {
-        return view('authors.create');
+        $authors = Author::all('id', 'first_name', 'name');
+        $publishers = Publisher::all('id', 'name');
+        return view('cookbooks.create', compact('authors', 'publishers'));
     }
 
     /**
@@ -38,13 +42,14 @@ class AuthorController extends Controller
     public function store(Request $request)
     {
         $validatedAttributes = request()->validate([
-            'first_name' => ['required', 'alpha', 'min:3'],
-            'name' => ['required', 'alpha', 'min:3'],
+            'title' => ['required', 'string', 'min:5'],
+            'author_id' => ['nullable', 'integer'],
+            'publisher_id' => ['nullable', 'integer']
         ]);
 
-        Author::create($validatedAttributes);
+        Cookbook::create($validatedAttributes);
 
-        return redirect('/authors');
+        return redirect('/cookbooks');
     }
 
     /**

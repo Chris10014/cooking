@@ -5,16 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Author extends Model
+class Publisher extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name', 'first_name'
+        'name'
     ];
 
     /**
-     * Get the cookbooks of the author.
+     * Get the cookbooks for the publisher.
      */
     public function cookbooks()
     {

@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Author;
+use App\Models\Recipe;
+use App\Models\Course;
+use App\Models\Dish_type;
+use App\Models\Cookbook;
 
-class AuthorController extends Controller
+class RecipeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,9 +17,7 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        $authors = Author::all();
-
-        return view('authors.index', compact('authors'));
+        return view("recipes.index");
     }
 
     /**
@@ -26,7 +27,11 @@ class AuthorController extends Controller
      */
     public function create()
     {
-        return view('authors.create');
+        $courses = Course::all('id', 'course');
+        $dish_types = Dish_type::all('id', 'type');
+        $cookbooks = Cookbook::all('id', 'title');
+
+        return view('recipes.create', compact('courses', 'dish_types', 'cookbooks'));
     }
 
     /**
@@ -38,13 +43,21 @@ class AuthorController extends Controller
     public function store(Request $request)
     {
         $validatedAttributes = request()->validate([
-            'first_name' => ['required', 'alpha', 'min:3'],
-            'name' => ['required', 'alpha', 'min:3'],
+            'recipe_name' => ['required', 'min:5'],
+            'preparation_time' => ['nullable', 'integer'],
+            'dish_type_id' => ['required', 'integer'],
+            'course_id' => ['required', 'integer'],
+            'cookbook_id' => ['nullable', 'integer'],
+            'page' => ['nullable', 'integer']
         ]);
 
-        Author::create($validatedAttributes);
+        Recipe::create($validatedAttributes);
 
-        return redirect('/authors');
+        // $recipe = new Recipe();
+        // $recipe->name = request('recipe_name');
+        // $recipe->preparation_time = request('preparation_time');
+        // $recipe->save();
+
     }
 
     /**

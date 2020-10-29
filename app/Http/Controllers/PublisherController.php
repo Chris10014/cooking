@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Author;
+use App\Models\Publisher;
 
-class AuthorController extends Controller
+class PublisherController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,9 +14,9 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        $authors = Author::all();
+        $publishers = Publisher::all();
 
-        return view('authors.index', compact('authors'));
+        return view('publishers.index', compact('publishers'));
     }
 
     /**
@@ -26,7 +26,7 @@ class AuthorController extends Controller
      */
     public function create()
     {
-        return view('authors.create');
+        return view('publishers.create');
     }
 
     /**
@@ -38,13 +38,12 @@ class AuthorController extends Controller
     public function store(Request $request)
     {
         $validatedAttributes = request()->validate([
-            'first_name' => ['required', 'alpha', 'min:3'],
-            'name' => ['required', 'alpha', 'min:3'],
+            'name' => ['required', 'string', 'min:3'],
         ]);
 
-        Author::create($validatedAttributes);
+        Publisher::create($validatedAttributes);
 
-        return redirect('/authors');
+        return redirect('/publishers');
     }
 
     /**
