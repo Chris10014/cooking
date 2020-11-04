@@ -98,6 +98,6 @@ class IncredientController extends Controller
      */
     public function destroy($id)
     {
-        //
+        //git test ...
     }
 }
