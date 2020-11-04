@@ -4,14 +4,14 @@
 <header>
     <h1>Verlage</h1>
 </header>
-    <main>
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                </tr>
-            </thead>
-            <tbody>
+<main>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
             @foreach($publishers as $publisher)
             <tr>
                 <td>
@@ -19,9 +19,9 @@
                 </td>
             </tr>
             @endforeach
-            </tbody>
-        </table>
-    </main>
+        </tbody>
+    </table>
+</main>
 <main>
 
 </main>

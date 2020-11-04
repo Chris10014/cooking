@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\PublisherController;
 use App\Http\Controllers\CookbookController;
 use App\Http\Controllers\RecipeController;
+use App\Http\Controllers\IncredientController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,3 +45,8 @@ Route::get("recipes", [RecipeController::Class, "index"])->name('recipes');
 Route::post("recipes", [RecipeController::Class, "store"])->name('recipes.store');
 Route::get("recipes/create", [RecipeController::Class, "create"])->name('recipes.create');
 Route::get("recipes/{recipe}", [RecipeController::Class, "show"])->name('recipes.show');
+
+Route::get("incredients", [IncredientController::Class, "index"])->name('incredients');
+Route::post("incredients", [IncredientController::Class, "store"])->name('incredients.store');
+Route::get("incredients/create", [IncredientController::Class, "create"])->name('incredients.create');
+Route::get("incredients/{incredient}", [IncredientController::Class, "show"])->name('incredients.show');

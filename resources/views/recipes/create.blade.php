@@ -4,58 +4,69 @@
 <header>
     <h1>Neues Rezept eingeben</h1>
 </header>
-{{ $courses }}<br>
-{{ $dish_types }}<br>
-{{ $cookbooks }}<br>
 
-    <main>
-    <form  method="POST" action="{{ route("recipes.store") }}">
+<main>
+    <form method="POST" action="{{ route("recipes.store") }}">
 
         @csrf
 
         <div class="form-group">
-          <label for="recipe_name">Rezept</label>
-          <input
-              type="text"
-              class="form-control"
-              name="recipe_name"
-              id="recipe_name"
-              placeholder="Rezeptname"
-              value="{{ old('recipe_name') }}">
-          @error('recipe_name')
-             <div class="alert alert-danger">{{ $message }}</div>
-          @enderror
+            <label for="name">Rezept</label>
+            <input type="text" class="form-control" name="name" id="name" placeholder="Rezeptname"
+                value="{{ old('name') }}">
+            @error('name')
+            <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
         </div>
         <div class="form-group">
-          <label for="preparation_time">Zubereitungszeit in Minuten</label>
-          <input
-              type="text"
-              class="form-control"
-              name="preparation_time"
-              id="preparation_time"
-              placeholder="Zubereitungszeit"
-              value="{{ old('preparation_time') }}">
-          @error('preparation_time')
-             <div class="alert alert-danger">{{ $message }}</div>
-          @enderror
+            <label for="preparation_time">Zubereitungszeit in Minuten</label>
+            <input type="number" min="3" class="form-control" name="preparation_time" id="preparation_time"
+                placeholder="Zubereitungszeit" value="{{ old('preparation_time') }}">
+            @error('preparation_time')
+            <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
         </div>
 
         <div class="form-group col-md-4">
-          <label for="cookbook">Kochbuch:</label>
-          <input list='cookbooks'
-                 type="search"
-                 name="cookbook"
-                 placeholder="Kochbuch"
-                 autocomplete="off">
-              <datalist id="cookbooks">
-                  @foreach($cookbooks->sortBy('title') as $cookbook)
-                      <option value="{{ $cookbook->title }}">
-                  @endforeach
-              </datalist>
+            <label for="cookbook_id">Kochbuch:</label>
+            <select class="custom-select" id="cookbook_id" name="cookbook_id">
+                <option value=""></option>
+                @foreach($cookbooks->sortBy('title') as $cookbook)
+                <option value="{{ $cookbook->id }}">{{ $cookbook->title }}</option>
+                @endforeach
+            </select>
+            @error('cookbook_id')
+            <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+            <br>
+            <label for="page">Seite</label>
+            <input type="number" class="form-control" name="page" id="page" placeholder="Seite"
+                value="{{ old('page') }}">
+            @error('page')
+            <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+        </div>
+        <div>
+            @foreach($dish_types->sortBy('de') as $dish_type)
+            <label for="">{{ $dish_type->de }}
+                <input type="radio" name="dish_type_id" value="{{ $dish_type->id }}">
+                @endforeach
+                @error('dish_type_id')
+                <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+        </div>
+        <div>
+            @foreach($courses->sortBy('id') as $course)
+            <label for="">{{ $course->de }}
+                <input type="radio" name="course_id" value="{{ $course->id }}">
+                @endforeach
+                @error('course_id')
+                <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
         </div>
 
         <button type="submit" class="btn btn-primary">Speichern</button>
     </form>
-    </main>
+</main>
 
 @endsection

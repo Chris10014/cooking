@@ -3,6 +3,14 @@
 @section('title', 'Rezepte')
 
 @section('content')
-<h1>Rezepte</h1>
+<header>
+    <h1>Rezepte</h1>
+</header>
+<main>
+    @foreach($recipes as $recipe)
+    {{ $recipe->name }}<br>
+    @endforeach
+</main>
+
 
 @endsection

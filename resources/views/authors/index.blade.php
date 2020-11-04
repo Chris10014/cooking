@@ -6,15 +6,15 @@
 <header>
     <h1>Authoren</h1>
 </header>
-    <main>
-        <table>
-            <thead>
-                <tr>
-                    <th>Vorname</th>
-                    <th>Nachname</th>
-                </tr>
-            </thead>
-            <tbody>
+<main>
+    <table>
+        <thead>
+            <tr>
+                <th>Vorname</th>
+                <th>Nachname</th>
+            </tr>
+        </thead>
+        <tbody>
             @foreach($authors as $author)
             <tr>
                 <td>
@@ -25,7 +25,7 @@
                 </td>
             </tr>
             @endforeach
-            </tbody>
-        </table>
-    </main>
+        </tbody>
+    </table>
+</main>
 @endsection
