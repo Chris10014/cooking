@@ -41,7 +41,7 @@
                 <option value="{{ $grocery_division->id }}">{{ $grocery_division->division_de }}</option>
                 @endforeach
             </select>
-            @error('food_group_id')
+            @error('grocery_division_id')
             <div class="alert alert-danger">{{ $message }}</div>
             @enderror
         </div>

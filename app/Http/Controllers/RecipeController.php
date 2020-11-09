@@ -7,6 +7,10 @@ use App\Models\Recipe;
 use App\Models\Course;
 use App\Models\Dish_type;
 use App\Models\Cookbook;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+
 
 class RecipeController extends Controller
 {
@@ -44,25 +48,17 @@ class RecipeController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedAttributes = request()->validate([
-            'name' => ['required', 'min:5'],
-            'preparation_time' => ['nullable', 'numeric'],
-            'dish_type_id' => ['required', 'integer'],
-            'course_id' => ['required', 'integer'],
-            'cookbook_id' => ['required_with:page'],
-            'page' => ['required_with:cookbook_id']
-        ]);
+        $validatedAttributes =  $this->validateRecipe(); // validates the attributes without the recipe_image
 
-        Recipe::create($validatedAttributes);
-        // dump(request()->all());
+        // if the request contains an image...
+        if ($request->hasFile('recipe_image')) {
+            $path = $this->uploadImage();
+            Recipe::create($validatedAttributes + ['recipe_image' => $path]); //adds the path of the recipe image to the request
+        } else {
+            Recipe::create($validatedAttributes);
+        }
 
-        // $recipe = new Recipe();
-        // $recipe->name = request('recipe_name');
-        // $recipe->preparation_time = request('preparation_time');
-        // $recipe->save();
-
-        return redirect('/recipes');
-
+         return redirect('/recipes');
     }
 
     /**
@@ -108,5 +104,50 @@ class RecipeController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function validateRecipe()
+    {
+        return request()->validate([
+            'name' => ['required', 'min:5'],
+            'preparation_time' => ['nullable', 'numeric'],
+            'dish_type_id' => ['required', 'integer'],
+            'course_id' => ['required', 'integer'],
+            'cookbook_id' => ['required_with:page'],
+            'page' => ['required_with:cookbook_id']
+        ]);
+    }
+
+    /**
+     * validates the image
+     * name the image with a 4 digits random number plus recipe name with replaced special characters
+     * returns the path of the uploaded image
+     *
+     * @param \Illuminate\Http\Request  $request
+     * @return string path
+     */
+
+    public function uploadImage()
+    {
+        $validatedImage = request()->validate([
+            'recipe_image' => ['nullable', 'image', 'max:500']
+        ]);
+
+        return request()->file('recipe_image')->storeAs('recipe_images', mt_rand(1000, 9999) . "_" . $this->str_replace_umlaute(request('name')));
+    }
+
+    /**
+     * replaces special characters white space and slash within a string in to underline
+     * replaces german "Umlaute"
+     * @param string $string
+     * @return string $replaced
+     */
+    public function str_replace_umlaute($string)
+    {
+        $source_characters  = array(' ', '/', 'ä', 'ö', 'ü', 'ß');
+        $target_characters = array('_', '_', 'ae', 'oe', 'ue', 'ss');
+        $replaced  = str_replace($source_characters, $target_characters, $string);
+
+        return $replaced;
     }
 }

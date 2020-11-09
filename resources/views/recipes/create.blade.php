@@ -6,7 +6,7 @@
 </header>
 
 <main>
-    <form method="POST" action="{{ route("recipes.store") }}">
+    <form method="POST" action="{{ route("recipes.store") }}" enctype="multipart/form-data">
 
         @csrf
 
@@ -32,9 +32,11 @@
             <select class="custom-select" id="cookbook_id" name="cookbook_id">
                 <option value=""></option>
                 @foreach($cookbooks->sortBy('title') as $cookbook)
-                <option value="{{ $cookbook->id }}">{{ $cookbook->title }}</option>
+                <option value="{{ $cookbook->id }}" {{ old('cookbook_id') == $cookbook->id ? 'selected' : '' }}>
+                    {{ $cookbook->title }}</option>
                 @endforeach
             </select>
+
             @error('cookbook_id')
             <div class="alert alert-danger">{{ $message }}</div>
             @enderror
@@ -49,7 +51,8 @@
         <div>
             @foreach($dish_types->sortBy('de') as $dish_type)
             <label for="">{{ $dish_type->de }}
-                <input type="radio" name="dish_type_id" value="{{ $dish_type->id }}">
+                <input type="radio" name="dish_type_id" value="{{ $dish_type->id }}"
+                    {{ old('dish_type_id') == $dish_type->id ? 'checked' : '' }}>
                 @endforeach
                 @error('dish_type_id')
                 <div class="alert alert-danger">{{ $message }}</div>
@@ -58,11 +61,20 @@
         <div>
             @foreach($courses->sortBy('id') as $course)
             <label for="">{{ $course->de }}
-                <input type="radio" name="course_id" value="{{ $course->id }}">
+                <input type="radio" name="course_id" value="{{ $course->id }}"
+                    {{ old('course_id') == $course->id ? 'checked' : '' }}>
                 @endforeach
                 @error('course_id')
                 <div class="alert alert-danger">{{ $message }}</div>
                 @enderror
+        </div>
+        <div class="form-group">
+            <label for="recipe_image">Bild</label>
+            <input type="file" class="form-control" name="recipe_image" id="recipe_image" placeholder="Bild">
+            {{-- an uploaded file can't be repopulated after a failed validation --}}
+            @error('recipe_image')
+            <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
         </div>
 
         <button type="submit" class="btn btn-primary">Speichern</button>
