@@ -28,4 +28,12 @@ class Incredient extends Model
     {
         return $this->belongsTo('App\Models\Grocery_division');
     }
+
+    /**
+     * Get the recipes that owns the incredient.
+     */
+    public function recipes()
+    {
+        return $this->belongsToMany('App\Models\Recipe');
+    }
 }

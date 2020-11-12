@@ -7,38 +7,68 @@
     <h1>Rezepte</h1>
 </header>
 <main>
-    @foreach($recipes as $recipe)
+    <p>Rezept hinzufügen <a href="{{ route('recipes.create') }}"><span><i class="fas fa-plus-square"></i></span></a></p>
+    <section>
+        <table>
+            <thead>
+                <th></th>
+                <th>Rezepttitel</th>
+            </thead>
+            <tbody>
+                @foreach($recipes as $recipe)
+                <tr>
+                    <td rowspan="2">
+                        <img src="{{ asset('storage/app/' . $recipe->recipe_image) }}" alt="" height="50%" width="50%">
+                    </td>
+                    <td>
+                        @switch($recipe->dish_type->de)
 
-    @switch($recipe->dish_type->de)
+                        @case('Fleisch')
+                        <span><i class="fas fa-drumstick-bite"></i></span>
+                        @break
 
-    @case('Fleisch')
-    <span><i class="fas fa-drumstick-bite"></i></span>
-    @break
+                        @case('vegetarisch')
+                        <span><i class="fas fa-carrot"></i></span>
+                        @break
 
-    @case('vegetarisch')
-    <span><i class="fas fa-carrot"></i></span>
-    @break
+                        @case('vegan')
+                        <span><i class="fas fa-seedling"></i></span>
+                        @break
 
-    @case('vegan')
-    <span><i class="fas fa-seedling"></i></span>
-    @break
+                        @case('Fisch')
+                        <span><i class="fas fa-fish"></i></span>
+                        @break
 
-    @case('Fisch')
-    <span><i class="fas fa-fish"></i></span>
-    @break
+                        @case('Pasta')
+                        <span><i class="fas fa-pizza-slice"></i></span>
+                        @break
 
-    @case('Pasta')
-    <span><i class="fas fa-pizza-slice"></i></span>
-    @break
+                        @endswitch
 
-    @endswitch
-
-    {{ $recipe->name }}<br>
-
-    @endforeach
-
+                        {{ $recipe->name }}</td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ $recipe->cookbook ? $recipe->cookbook->title . ", S. " . $recipe->page : "" }}
+                        @if(count($recipe->incredients) != 0)
+                        <details>
+                            <summary>
+                                Zutatenliste
+                            </summary>
+                            <ul>
+                                @foreach($recipe->incredients->sortBy('incredient_de') as $incredient)
+                                <li>{{ $incredient->incredient_de }}</li>
+                                @endforeach
+                            </ul>
+                        </details>
+                        @else
+                        @endif
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </section>
     <p>Legende: <i class="fas fa-drumstick-bite"></i> Fleisch, <i class="fas fa-carrot"></i> vegetarisch, <i class="fas fa-seedling"></i> vegan, <i class="fas fa-fish"></i> Fisch</p>
 </main>
-
-
 @endsection

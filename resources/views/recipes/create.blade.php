@@ -18,6 +18,7 @@
             <div class="alert alert-danger">{{ $message }}</div>
             @enderror
         </div>
+
         <div class="form-group">
             <label for="preparation_time">Zubereitungszeit in Minuten</label>
             <input type="number" min="3" class="form-control" name="preparation_time" id="preparation_time"
@@ -48,6 +49,7 @@
             <div class="alert alert-danger">{{ $message }}</div>
             @enderror
         </div>
+
         <div>
             @foreach($dish_types->sortBy('de') as $dish_type)
             <label for="">{{ $dish_type->de }}
@@ -58,6 +60,7 @@
                 <div class="alert alert-danger">{{ $message }}</div>
                 @enderror
         </div>
+
         <div>
             @foreach($courses->sortBy('id') as $course)
             <label for="">{{ $course->de }}
@@ -68,6 +71,7 @@
                 <div class="alert alert-danger">{{ $message }}</div>
                 @enderror
         </div>
+
         <div class="form-group">
             <label for="recipe_image">Bild</label>
             <input type="file" class="form-control" name="recipe_image" id="recipe_image" placeholder="Bild">
@@ -76,6 +80,22 @@
             <div class="alert alert-danger">{{ $message }}</div>
             @enderror
         </div>
+
+        <div>
+            {{-- laracast "Laravel From Scratch episode 33" timestamp 02:00 --}}
+            @foreach($incredients->sortBy('incredient_de') as $incredient)
+            <label for="incredient_ids">{{ $incredient->incredient_de }}</label>
+                <input type="checkbox" name="incredient_ids[]" value="{{ $incredient->id }}"
+                @if(in_array($incredient->id, old('incredient_ids', [])))
+                    checked
+                @endif
+                >
+            @endforeach
+            @error('incredient_id')
+            <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+        </div>
+
 
         <button type="submit" class="btn btn-primary">Speichern</button>
     </form>

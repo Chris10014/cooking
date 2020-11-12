@@ -36,4 +36,9 @@ class Recipe extends Model
     {
         return $this->belongsTo('App\Models\Course');
     }
+
+    public function incredients()
+    {
+        return $this->belongsToMany('App\Models\Incredient');
+    }
 }

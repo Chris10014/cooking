@@ -7,6 +7,7 @@ use App\Models\Recipe;
 use App\Models\Course;
 use App\Models\Dish_type;
 use App\Models\Cookbook;
+use App\Models\Incredient;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -36,8 +37,9 @@ class RecipeController extends Controller
         $courses = Course::all('id', 'de');
         $dish_types = Dish_type::all('id', 'de');
         $cookbooks = Cookbook::all('id', 'title');
+        $incredients = Incredient::all('id', 'incredient_de');
 
-        return view('recipes.create', compact('courses', 'dish_types', 'cookbooks'));
+        return view('recipes.create', compact('courses', 'dish_types', 'cookbooks', 'incredients'));
     }
 
     /**
@@ -48,17 +50,22 @@ class RecipeController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedAttributes =  $this->validateRecipe(); // validates the attributes without the recipe_image
+        $this->validateRecipe(); // validates the attributes without the recipe_image
 
         // if the request contains an image...
         if ($request->hasFile('recipe_image')) {
             $path = $this->uploadImage();
-            Recipe::create($validatedAttributes + ['recipe_image' => $path]); //adds the path of the recipe image to the request
-        } else {
-            Recipe::create($validatedAttributes);
-        }
 
-         return redirect('/recipes');
+            $recipe = new Recipe(request(['name', 'preparation_time', 'dish_type_id', 'course_id', 'cookbook_id', 'page']) + ['recipe_image' => $path]); //adds the path of the recipe image to the request
+        } else {
+            $recipe = new Recipe(request(['name', 'preparation_time', 'dish_type_id', 'course_id', 'cookbook_id', 'page']));
+            // Recipe::create($validatedAttributes);
+        }
+        $recipe->save();
+
+        $recipe->incredients()->attach(request('incredient_ids'));
+
+        return redirect('/recipes');
     }
 
     /**
@@ -111,10 +118,12 @@ class RecipeController extends Controller
         return request()->validate([
             'name' => ['required', 'min:5'],
             'preparation_time' => ['nullable', 'numeric'],
-            'dish_type_id' => ['required', 'integer'],
-            'course_id' => ['required', 'integer'],
-            'cookbook_id' => ['required_with:page'],
-            'page' => ['required_with:cookbook_id']
+            'dish_type_id' => ['required', 'integer', 'exists:dish_types,id'],
+            'course_id' => ['required', 'exists:courses,id'],
+            'cookbook_id' => ['nullable','required_with:page', 'exists:cookbooks,id'],
+            'page' => ['required_with:cookbook_id'],
+            'incredient_ids' => ['exists:incredients,id']
+
         ]);
     }
 
