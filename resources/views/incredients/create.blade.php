@@ -26,7 +26,7 @@
             <select class="custom-select" id="food_group_id" name="food_group_id">
                 <option value=""></option>
                 @foreach($food_groups->sortBy('food_group_de') as $food_group)
-                <option value="{{ $food_group->id }}">{{ $food_group->food_group_de }}</option>
+                <option value="{{ $food_group->id }}" {{old('food_group_id') == $food_group->id ? 'selected' : '' }}>{{ $food_group->food_group_de }}</option>
                 @endforeach
             </select>
             @error('food_group_id')
@@ -38,7 +38,7 @@
             <select class="custom-select" id="grocery_division_id" name="grocery_division_id">
                 <option value=""></option>
                 @foreach($grocery_divisions->sortBy('division_de') as $grocery_division)
-                <option value="{{ $grocery_division->id }}">{{ $grocery_division->division_de }}</option>
+                <option value="{{ $grocery_division->id }}" {{ old('grocery_division_id') == $grocery_division->id ? 'selected' : '' }}>{{ $grocery_division->division_de }}</option>
                 @endforeach
             </select>
             @error('grocery_division_id')

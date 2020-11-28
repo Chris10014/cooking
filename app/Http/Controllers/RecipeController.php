@@ -8,6 +8,7 @@ use App\Models\Course;
 use App\Models\Dish_type;
 use App\Models\Cookbook;
 use App\Models\Incredient;
+use App\Models\Unit;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -23,8 +24,9 @@ class RecipeController extends Controller
     public function index()
     {
         $recipes = Recipe::all();
+        $units = Unit::all('id', 'abbreviation');
 
-        return view("recipes.index", compact('recipes'));
+        return view("recipes.index", compact('recipes', 'units'));
     }
 
     /**
@@ -38,8 +40,9 @@ class RecipeController extends Controller
         $dish_types = Dish_type::all('id', 'de');
         $cookbooks = Cookbook::all('id', 'title');
         $incredients = Incredient::all('id', 'incredient_de');
+        $units = Unit::all('id', 'abbreviation');
 
-        return view('recipes.create', compact('courses', 'dish_types', 'cookbooks', 'incredients'));
+        return view('recipes.create', compact('courses', 'dish_types', 'cookbooks', 'incredients', 'units'));
     }
 
     /**
@@ -50,20 +53,42 @@ class RecipeController extends Controller
      */
     public function store(Request $request)
     {
+
         $this->validateRecipe(); // validates the attributes without the recipe_image
 
-        // if the request contains an image...
+        // if the request contains an image
         if ($request->hasFile('recipe_image')) {
             $path = $this->uploadImage();
-
             $recipe = new Recipe(request(['name', 'preparation_time', 'dish_type_id', 'course_id', 'cookbook_id', 'page']) + ['recipe_image' => $path]); //adds the path of the recipe image to the request
         } else {
             $recipe = new Recipe(request(['name', 'preparation_time', 'dish_type_id', 'course_id', 'cookbook_id', 'page']));
-            // Recipe::create($validatedAttributes);
         }
+
+        //Store to database
         $recipe->save();
 
-        $recipe->incredients()->attach(request('incredient_ids'));
+        if (count(request('incredient_ids')) != 0) {
+            /**
+             * To eliminate NULL values from the request arrays to sync with the incredient_ids array.
+             * Because <checkbox> field doesn't post NULL values but <select> field does.
+             *  */
+            $quantities = [];
+            $unit_ids = [];
+            foreach (request('quantities') as $quantity) {
+                if ($quantity != NULL) {
+                    array_push($quantities, $quantity);
+                }
+            }
+            foreach (request('unit_ids') as $unit_id) {
+                if ($unit_id != NULL) {
+                    array_push($unit_ids, $unit_id);
+                }
+            }
+            //attach releationship to link table including additional fields
+            for ($i = 0; $i < count(request('incredient_ids')); $i++) {
+                $recipe->incredients()->attach(request('incredient_ids')[$i], ['quantity' => $quantities[$i], 'unit_id' => $unit_ids[$i]]);
+            }
+        }
 
         return redirect('/recipes');
     }
@@ -121,9 +146,10 @@ class RecipeController extends Controller
             'dish_type_id' => ['required', 'integer', 'exists:dish_types,id'],
             'course_id' => ['required', 'exists:courses,id'],
             'cookbook_id' => ['nullable','required_with:page', 'exists:cookbooks,id'],
-            'page' => ['required_with:cookbook_id'],
-            'incredient_ids' => ['exists:incredients,id']
-
+            'page' => ['nullable', 'required_with:cookbook_id'],
+            'incredient_ids' => ['exists:incredients,id'],
+            'quantities' => [],
+            'unit_ids' =>[]
         ]);
     }
 
@@ -139,7 +165,7 @@ class RecipeController extends Controller
     public function uploadImage()
     {
         $validatedImage = request()->validate([
-            'recipe_image' => ['nullable', 'image', 'max:500']
+            'recipe_image' => ['nullable', 'image', 'max:500', 'dimensions:ratio=3/2']
         ]);
 
         return request()->file('recipe_image')->storeAs('recipe_images', mt_rand(1000, 9999) . "_" . $this->str_replace_umlaute(request('name')));

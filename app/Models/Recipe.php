@@ -37,8 +37,12 @@ class Recipe extends Model
         return $this->belongsTo('App\Models\Course');
     }
 
+    /**
+     * The incredients belong to the recipe with quantity and unit
+     */
     public function incredients()
     {
-        return $this->belongsToMany('App\Models\Incredient');
+        return $this->belongsToMany('App\Models\Incredient')
+            ->withPivot(['quantity', 'unit_id']);
     }
 }

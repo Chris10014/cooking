@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateIncredientsRecipesTable extends Migration
+class RenameQuantityIdIncredientRecipeTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateIncredientsRecipesTable extends Migration
      */
     public function up()
     {
-        Schema::create('incredients_recipes', function (Blueprint $table) {
-            $table->foreignId('incredient_id')->constrained();
-            $table->foreignId('recipe_id')->constrained();
+        Schema::table('incredient_recipe', function (Blueprint $table) {
+            $table->dropColumn('quantity_id');
+            $table->double('quantity', 4, 1)->nullable();
         });
     }
 
@@ -26,6 +26,6 @@ class CreateIncredientsRecipesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('incredients_recipes');
+        //
     }
 }

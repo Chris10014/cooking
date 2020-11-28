@@ -34,6 +34,8 @@ class Incredient extends Model
      */
     public function recipes()
     {
-        return $this->belongsToMany('App\Models\Recipe');
+        return $this->belongsToMany('App\Models\Recipe')
+            ->withPivot(['quantity', 'unit_id']);
     }
+
 }

@@ -15,7 +15,7 @@ class CreateGroceryDivisionsTable extends Migration
     {
         Schema::create('grocery_divisions', function (Blueprint $table) {
             $table->id();
-            $table->string('division_name')->unique();
+            $table->string('division_de')->unique();
             $table->timestamps();
         });
     }

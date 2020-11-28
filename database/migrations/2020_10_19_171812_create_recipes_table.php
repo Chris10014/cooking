@@ -16,11 +16,15 @@ class CreateRecipesTable extends Migration
         Schema::create('recipes', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('page');
-            $table->foreignId('cookbook_id')->constrained();
+            $table->string('recipe_image')->nullable();
+            $table->integer('preparation_time')->nullable();
+            $table->integer('page')->nullable();
+            $table->foreignId('cookbook_id')->nullable()->constrained();
             $table->foreignId('dish_type_id')->constrained();
             $table->foreignId('course_id')->constrained();
             $table->timestamps();
+
+            $table->unique(['name', 'cookbook_id']);
         });
     }
 

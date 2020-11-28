@@ -12,7 +12,7 @@
 
         <div class="form-group">
             <label for="name">Rezept</label>
-            <input type="text" class="form-control" name="name" id="name" placeholder="Rezeptname"
+            <input class="pseudo-table-cell" type="text" class="form-control" name="name" id="name" placeholder="Rezeptname"
                 value="{{ old('name') }}">
             @error('name')
             <div class="alert alert-danger">{{ $message }}</div>
@@ -21,7 +21,7 @@
 
         <div class="form-group">
             <label for="preparation_time">Zubereitungszeit in Minuten</label>
-            <input type="number" min="3" class="form-control" name="preparation_time" id="preparation_time"
+            <input class="pseudo-table-cell" type="number" min="3" class="form-control" name="preparation_time" id="preparation_time"
                 placeholder="Zubereitungszeit" value="{{ old('preparation_time') }}">
             @error('preparation_time')
             <div class="alert alert-danger">{{ $message }}</div>
@@ -30,7 +30,7 @@
 
         <div class="form-group col-md-4">
             <label for="cookbook_id">Kochbuch:</label>
-            <select class="custom-select" id="cookbook_id" name="cookbook_id">
+            <select class="pseudo-table-cell" class="custom-select" id="cookbook_id" name="cookbook_id">
                 <option value=""></option>
                 @foreach($cookbooks->sortBy('title') as $cookbook)
                 <option value="{{ $cookbook->id }}" {{ old('cookbook_id') == $cookbook->id ? 'selected' : '' }}>
@@ -43,7 +43,7 @@
             @enderror
             <br>
             <label for="page">Seite</label>
-            <input type="number" class="form-control" name="page" id="page" placeholder="Seite"
+            <input class="pseudo-table-cell" type="number" class="form-control" name="page" id="page" placeholder="Seite"
                 value="{{ old('page') }}">
             @error('page')
             <div class="alert alert-danger">{{ $message }}</div>
@@ -81,19 +81,50 @@
             @enderror
         </div>
 
-        <div>
+        <div class="cell">
             {{-- laracast "Laravel From Scratch episode 33" timestamp 02:00 --}}
             @foreach($incredients->sortBy('incredient_de') as $incredient)
-            <label for="incredient_ids">{{ $incredient->incredient_de }}</label>
-                <input type="checkbox" name="incredient_ids[]" value="{{ $incredient->id }}"
-                @if(in_array($incredient->id, old('incredient_ids', [])))
-                    checked
+            <div class="cell">
+
+                <label for="incredient_ids">{{ $incredient->incredient_de }}</label>
+                <input type="checkbox" name="incredient_ids[]" value="{{ $incredient->id }}" @if(in_array($incredient->id,
+                old('incredient_ids', [])))
+                checked
                 @endif
                 >
+                @error('incredient_ids')
+                <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+
+            </div>
+            <div class="cell">
+                <label for="quantity">Menge</label>
+                <input type="number" class="form-control" name="quantities[]" id="quantity" placeholder="Menge"
+                    value="{{ old('quantity') }}">
+                @error('quantity')
+                <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+
+            </div>
+            <div class="cell">
+
+
+                <label for="unit">Einheit:</label>
+                <select class="custom-select" id="unit_id" name="unit_ids[]">
+                    <option value=""></option>
+                    @foreach($units->sortBy('abbreviation') as $unit)
+                    <option value="{{ $unit->id }}" {{in_array($unit->id, old('units_id', []))? 'selected' : '' }}>
+                        {{ $unit->abbreviation }}</option>
+                    @endforeach
+                </select>
+
+                @error('unit_id')
+                <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+            </div>
+
             @endforeach
-            @error('incredient_id')
-            <div class="alert alert-danger">{{ $message }}</div>
-            @enderror
+
         </div>
 
 

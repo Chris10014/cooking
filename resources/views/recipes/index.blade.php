@@ -9,16 +9,16 @@
 <main>
     <p>Rezept hinzufügen <a href="{{ route('recipes.create') }}"><span><i class="fas fa-plus-square"></i></span></a></p>
     <section>
-        <table>
+        <table class="table table-striped table-dark">
             <thead>
                 <th></th>
                 <th>Rezepttitel</th>
             </thead>
             <tbody>
                 @foreach($recipes as $recipe)
-                <tr>
+                 <tr>
                     <td rowspan="2">
-                        <img src="{{ asset('storage/app/' . $recipe->recipe_image) }}" alt="" height="50%" width="50%">
+                        <img src="{{ asset('storage/app/' . $recipe->recipe_image) }}" alt="dish" width="100px">
                     </td>
                     <td>
                         @switch($recipe->dish_type->de)
@@ -57,7 +57,14 @@
                             </summary>
                             <ul>
                                 @foreach($recipe->incredients->sortBy('incredient_de') as $incredient)
-                                <li>{{ $incredient->incredient_de }}</li>
+                                <li>{{ $incredient->incredient_de }}
+                                    @if($incredient->pivot->quantity != null)
+                                        <span>Menge: {{  $incredient->pivot->quantity }}</span>
+                                        @if($incredient->pivot->unit_id != null)
+                                           <span>{{ $units->where('id', $incredient->pivot->unit_id)->first()->abbreviation }}</span>
+                                        @endif
+                                    @endif
+                                </li>
                                 @endforeach
                             </ul>
                         </details>
@@ -69,6 +76,7 @@
             </tbody>
         </table>
     </section>
-    <p>Legende: <i class="fas fa-drumstick-bite"></i> Fleisch, <i class="fas fa-carrot"></i> vegetarisch, <i class="fas fa-seedling"></i> vegan, <i class="fas fa-fish"></i> Fisch</p>
+
+    <p><strong>Legende</strong><br><i class="fas fa-drumstick-bite"></i> Fleisch, <i class="fas fa-carrot"></i> vegetarisch, <i class="fas fa-seedling"></i> vegan, <i class="fas fa-fish"></i> Fisch</p>
 </main>
 @endsection

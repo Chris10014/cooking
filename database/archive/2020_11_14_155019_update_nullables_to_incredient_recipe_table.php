@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDishTypesTable extends Migration
+class UpdateNullablesToIncredientRecipeTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class CreateDishTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('dish_types', function (Blueprint $table) {
-            $table->id();
-            $table->string('de')->unique();
-            $table->timestamps();
+        Schema::table('incredient_recipe', function (Blueprint $table) {
+            $table->foreignId('quantity_id')->nullable()->change();
+            $table->foreignId('unit_id')->nullable()->change();
         });
     }
 
@@ -27,6 +26,8 @@ class CreateDishTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('dish_types');
+        Schema::table('incredient_recipe', function (Blueprint $table) {
+            //
+        });
     }
 }

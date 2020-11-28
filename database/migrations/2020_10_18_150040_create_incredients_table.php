@@ -15,13 +15,10 @@ class CreateIncredientsTable extends Migration
     {
         Schema::create('incredients', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->bigInteger('supermarket_division_id');
-            $table->bigInteger('food_group_id');
+            $table->string('incredient_de')->unique();
+            $table->bigInteger('grocery_division_id')->nullable()->constrained();
+            $table->bigInteger('food_group_id')->constrained();
             $table->timestamps();
-            
-//            $table->foreign('supermarket_division_id')->references('id')->on('supermarket_divisions');
-//            $table->foreign('food_group_id')->references('id')->on('food_groups');
         });
     }
 

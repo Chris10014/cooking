@@ -14,7 +14,7 @@
     <script src="https://kit.fontawesome.com/c1d2775197.js" crossorigin="anonymous"></script>
 
     {{-- Styles --}}
-    <link href="{{ asset('resources/css/cooking.css') }}" rel="stylesheet" />
+    <link href="{{ asset('/public/css/cooking.css') }}" rel="stylesheet">
 
     <title>@yield('title', "Rezepte")</title>
 </head>

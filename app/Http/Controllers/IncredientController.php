@@ -47,8 +47,8 @@ class IncredientController extends Controller
 
         $validatedAttributes = request()->validate([
             'incredient_de' => ['required', 'alpha', 'min:2'],
-            'food_group_id' => ['required', 'numeric'],
-            'grocery_division_id' => ['nullable', 'numeric'],
+            'food_group_id' => ['required', 'exists:food_groups,id'],
+            'grocery_division_id' => ['nullable', 'exists:grocery_divisions,id'],
         ]);
 
         Incredient::create($validatedAttributes);
