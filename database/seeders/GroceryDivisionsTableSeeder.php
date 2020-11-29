@@ -1,7 +1,5 @@
 <?php
 
-namespace Database\Seeders;
-
 use Illuminate\Database\Seeder;
 
 class GroceryDivisionsTableSeeder extends Seeder
@@ -14,62 +12,62 @@ class GroceryDivisionsTableSeeder extends Seeder
      */
     public function run()
     {
-
+        
 
         \DB::table('grocery_divisions')->delete();
-
+        
         \DB::table('grocery_divisions')->insert(array (
-            0 =>
+            0 => 
             array (
                 'id' => 1,
-                'division_name' => 'Obst & Gemüse',
+                'division_de' => 'Obst & Gemüse',
                 'created_at' => '2020-10-19 21:35:17',
                 'updated_at' => '2020-10-19 21:35:17',
             ),
-            1 =>
+            1 => 
             array (
                 'id' => 2,
-                'division_name' => 'Frischetheke',
+                'division_de' => 'Frischetheke',
                 'created_at' => '2020-10-19 21:35:17',
                 'updated_at' => '2020-10-19 21:35:17',
             ),
-            2 =>
+            2 => 
             array (
                 'id' => 3,
-                'division_name' => 'Backwaren',
+                'division_de' => 'Backwaren',
                 'created_at' => '2020-10-19 21:35:17',
                 'updated_at' => '2020-10-19 21:35:17',
             ),
-            3 =>
+            3 => 
             array (
                 'id' => 4,
-                'division_name' => 'Konserven',
+                'division_de' => 'Konserven',
                 'created_at' => '2020-10-19 21:35:17',
                 'updated_at' => '2020-10-19 21:35:17',
             ),
-            4 =>
+            4 => 
             array (
                 'id' => 5,
-                'division_name' => 'Kühlregal',
+                'division_de' => 'Kühlregal',
                 'created_at' => '2020-10-19 21:35:17',
                 'updated_at' => '2020-10-19 21:35:17',
             ),
-            5 =>
+            5 => 
             array (
                 'id' => 6,
-                'division_name' => 'Delikatessen',
+                'division_de' => 'Delikatessen',
                 'created_at' => '2020-10-19 21:35:17',
                 'updated_at' => '2020-10-19 21:35:17',
             ),
-            6 =>
+            6 => 
             array (
                 'id' => 7,
-                'division_name' => 'Gefriertheke',
+                'division_de' => 'Gefriertheke',
                 'created_at' => '2020-10-19 21:35:17',
                 'updated_at' => '2020-10-19 21:35:17',
             ),
         ));
-
-
+        
+        
     }
 }
