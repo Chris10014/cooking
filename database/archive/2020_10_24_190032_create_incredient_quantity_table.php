@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateIncredientsQuantitiesTable extends Migration
+class CreateIncredientQuantityTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateIncredientsQuantitiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('incredients_quantities', function (Blueprint $table) {
+        Schema::create('incredient_quantity', function (Blueprint $table) {
             $table->foreignId('incredient_id');
             $table->foreignId('quantity_id');
         });
