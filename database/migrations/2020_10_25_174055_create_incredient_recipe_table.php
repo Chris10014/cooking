@@ -29,6 +29,6 @@ class CreateIncredientRecipeTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('incredients_recipes');
+        Schema::dropIfExists('incredient_recipe');
     }
 }
