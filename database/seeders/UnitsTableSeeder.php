@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
 
 class UnitsTableSeeder extends Seeder
@@ -12,12 +14,12 @@ class UnitsTableSeeder extends Seeder
      */
     public function run()
     {
-        
+
 
         \DB::table('units')->delete();
-        
+
         \DB::table('units')->insert(array (
-            0 => 
+            0 =>
             array (
                 'id' => 1,
                 'dimension' => 'Volumen',
@@ -26,7 +28,7 @@ class UnitsTableSeeder extends Seeder
                 'created_at' => '2020-10-24 21:12:48',
                 'updated_at' => '2020-10-24 21:12:48',
             ),
-            1 => 
+            1 =>
             array (
                 'id' => 2,
                 'dimension' => 'Gewicht',
@@ -35,7 +37,7 @@ class UnitsTableSeeder extends Seeder
                 'created_at' => '2020-10-24 21:12:48',
                 'updated_at' => '2020-10-24 21:12:48',
             ),
-            2 => 
+            2 =>
             array (
                 'id' => 3,
                 'dimension' => 'Anzahl',
@@ -45,7 +47,7 @@ class UnitsTableSeeder extends Seeder
                 'updated_at' => '2020-10-24 21:12:48',
             ),
         ));
-        
-        
+
+
     }
 }
