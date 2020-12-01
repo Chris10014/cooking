@@ -16,7 +16,7 @@ class IncredientController extends Controller
      */
     public function index()
     {
-        $incredients = Incredient::all();
+        $incredients = Incredient::latest()->get();
 
         return view('incredients.index', compact('incredients'));
     }
@@ -64,7 +64,10 @@ class IncredientController extends Controller
      */
     public function show($id)
     {
-        //
+        // return "hello " . $id;
+        $incredient = Incredient::find($id);
+
+        return view('incredients.show', compact('incredient'));
     }
 
     /**
@@ -75,7 +78,13 @@ class IncredientController extends Controller
      */
     public function edit($id)
     {
-        //
+
+        $incredient = Incredient::find($id);
+
+        $food_groups = Food_group::all('id', 'food_group_de');
+        $grocery_divisions = Grocery_division::all('id', 'division_de');
+
+        return view('incredients.edit', compact('incredient', 'food_groups', 'grocery_divisions'));
     }
 
     /**
@@ -87,7 +96,16 @@ class IncredientController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $incredient = Incredient::find($id);
+
+        $incredient->incredient_de = request('incredient_de');
+        $incredient->food_group_id = request('food_group_id');
+        $incredient->grocery_division_id = request('grocery_division_id');
+
+        $incredient->save();
+
+        return redirect('incredients/' . $incredient->id);
+
     }
 
     /**

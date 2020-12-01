@@ -50,3 +50,5 @@ Route::get("incredients", [IncredientController::Class, "index"])->name('incredi
 Route::post("incredients", [IncredientController::Class, "store"])->name('incredients.store');
 Route::get("incredients/create", [IncredientController::Class, "create"])->name('incredients.create');
 Route::get("incredients/{incredient}", [IncredientController::Class, "show"])->name('incredients.show');
+Route::get("incredients/{incredient}/edit", [IncredientController::Class, "edit"])->name('incredients.edit');
+Route::put("incredients/{incredient}", [IncredientController::Class, "update"])->name('incredients.update');;
