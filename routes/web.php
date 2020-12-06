@@ -6,6 +6,7 @@ use App\Http\Controllers\PublisherController;
 use App\Http\Controllers\CookbookController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\IncredientController;
+use App\Models\Incredient;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,6 +50,8 @@ Route::get("recipes/{recipe}", [RecipeController::Class, "show"])->name('recipes
 Route::get("incredients", [IncredientController::Class, "index"])->name('incredients');
 Route::post("incredients", [IncredientController::Class, "store"])->name('incredients.store');
 Route::get("incredients/create", [IncredientController::Class, "create"])->name('incredients.create');
+Route::delete("incredients/{id}", [IncredientController::Class, "destroy"])->name('incredients.delete');
 Route::get("incredients/{incredient}", [IncredientController::Class, "show"])->name('incredients.show');
 Route::get("incredients/{incredient}/edit", [IncredientController::Class, "edit"])->name('incredients.edit');
-Route::put("incredients/{incredient}", [IncredientController::Class, "update"])->name('incredients.update');;
+Route::put("incredients/{incredient}", [IncredientController::Class, "update"])->name('incredients.update');
+

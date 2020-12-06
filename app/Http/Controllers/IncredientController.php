@@ -116,6 +116,9 @@ class IncredientController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $incredient = Incredient::find($id);
+        $incredient->delete();
+
+        return redirect('/incredients');
     }
 }

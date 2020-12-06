@@ -30,7 +30,7 @@
                 {{ $incredient->grocery_division->division_de }}
             </td>
             <td>
-                <a href="{{ route('incredients.edit', [$incredient->id]) }}"><span><i class="fas fa-pen"></i></span></a>&nbsp;&nbsp;<i class="fas fa-trash-alt"></i>
+                <a href="{{ route('incredients.edit', [$incredient->id]) }}"><span><i class="fas fa-pen"></i></span></a>&nbsp;&nbsp;<a onclick="alert('Soll {{ $incredient->incredient_de }} endgültig gelöscht werden?')" href="{{ route('incredients.delete', [$incredient->id]) }}"><i class="fas fa-trash-alt"></i></a>
             </td>
         </tr>
 
