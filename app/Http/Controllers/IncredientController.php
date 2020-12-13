@@ -46,7 +46,7 @@ class IncredientController extends Controller
         // dump(request()->all());
 
         $validatedAttributes = request()->validate([
-            'incredient_de' => ['required', 'alpha', 'min:2'],
+            'incredient_de' => ['required', 'min:2'],
             'food_group_id' => ['required', 'exists:food_groups,id'],
             'grocery_division_id' => ['nullable', 'exists:grocery_divisions,id'],
         ]);
@@ -96,6 +96,12 @@ class IncredientController extends Controller
      */
     public function update(Request $request, $id)
     {
+        request()->validate([
+            'incredient_de' => ['required', 'min:2'],
+            'food_group_id' => ['required', 'exists:food_groups,id'],
+            'grocery_division_id' => ['nullable', 'exists:grocery_divisions,id'],
+        ]);
+
         $incredient = Incredient::find($id);
 
         $incredient->incredient_de = request('incredient_de');
