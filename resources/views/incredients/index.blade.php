@@ -27,7 +27,7 @@
                 {{ $incredient->food_group->food_group_de }}
             </td>
             <td>
-                {{-- {{ $incredient->grocery_division->division_de }} --}}
+                {{ $incredient->grocery_division->division_de }}
             </td>
             <td>
                 <a href="{{ route('incredients.edit', [$incredient->id]) }}"><span><i class="fas fa-pen"></i></span></a>&nbsp;&nbsp;
