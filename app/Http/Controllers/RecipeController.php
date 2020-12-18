@@ -165,7 +165,7 @@ class RecipeController extends Controller
     public function uploadImage()
     {
         $validatedImage = request()->validate([
-            'recipe_image' => ['nullable', 'image', 'max:500', 'dimensions:ratio=3/2']
+            'recipe_image' => ['nullable', 'image', 'max:500']
         ]);
 
         return request()->file('recipe_image')->storeAs('recipe_images', mt_rand(1000, 9999) . "_" . $this->str_replace_umlaute(request('name')));

@@ -53,3 +53,7 @@ footer {
 .form-inline {
     display: inline;
 }
+
+.button-inline {
+    display: inline-block;
+}

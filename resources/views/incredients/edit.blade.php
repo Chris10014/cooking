@@ -42,7 +42,11 @@
 
         <button type="submit" class="btn btn-primary">Speichern</button>
     </form>
-
+    <form method="POST" action="{{ route('incredients.delete', [$incredient->id]) }}">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn btn-danger">Löschen</button>
+    </form>
 </main>
 
 @endsection
