@@ -66,6 +66,8 @@ class IncredientController extends Controller
     {
         // return "hello " . $id;
         $incredient = Incredient::find($id);
+        // todo: write updated when changed
+        // $updated = "updated";
 
         return view('incredients.show', compact('incredient'));
     }
@@ -109,6 +111,8 @@ class IncredientController extends Controller
         $incredient->grocery_division_id = request('grocery_division_id');
 
         $incredient->save();
+
+        //todo: send update attribute
 
         return redirect('incredients/' . $incredient->id);
 

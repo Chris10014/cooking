@@ -4,7 +4,7 @@
 @section('content')
 
 <head>
-    <h1>Zutat</h1>
+    <h1>Zutat {{ $incredient->incredient_de }}</h1>
 </head>
 <main>
 
