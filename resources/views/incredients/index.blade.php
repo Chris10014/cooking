@@ -3,11 +3,13 @@
 
 @section('content')
 
-<head>
+<header>
     <h1>Zutatenliste</h1>
-</head>
+</header>
 <main>
     <p>Neue Zutat hinzufügen <a href="{{ route('incredients.create') }}"><span><i class="fas fa-plus-square"></i></span></a></p>
+
+{{  session('test') }}
 
     <table class="table table-responsive">
         <thead>

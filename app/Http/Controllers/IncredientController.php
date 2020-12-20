@@ -113,8 +113,8 @@ class IncredientController extends Controller
         $incredient->save();
 
         //todo: send update attribute
-
-        return redirect('incredients/' . $incredient->id);
+$test = "test";
+        return redirect('incredients');
 
     }
 

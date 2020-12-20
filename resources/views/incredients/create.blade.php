@@ -3,9 +3,9 @@
 
 @section('content')
 
-<head>
+<header>
     <h1>Neue Zutat eingeben</h1>
-</head>
+</header>
 <main>
 
 
@@ -21,7 +21,7 @@
             <div class="alert alert-danger">{{ $message }}</div>
             @enderror
         </div>
-        <div class="form-group col-md-4">
+        <div class="form-group">
             <label for="food_group_id">Zutatenart</label>
             <select class="custom-select" id="food_group_id" name="food_group_id">
                 <option value=""></option>
@@ -33,7 +33,7 @@
             <div class="alert alert-danger">{{ $message }}</div>
             @enderror
         </div>
-        <div class="form-group col-md-4">
+        <div class="form-group">
             <label for="grocery_division_id">Abteilung</label>
             <select class="custom-select" id="grocery_division_id" name="grocery_division_id">
                 <option value=""></option>

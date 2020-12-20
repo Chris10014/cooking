@@ -18,10 +18,8 @@
 
     <title>@yield('title', "Rezepte")</title>
 </head>
-<header>
-</header>
-
 <body>
+    <wrapper class="d-flex flex-column">
     <div class="container-fluid">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <a class="navbar-brand" href="{{ url('/home') }}">Rezeptfinder</a>
@@ -54,12 +52,14 @@
                 </ul>
             </div>
         </nav>
-
+<div class="flex-fill">
         @yield('content')
 
-        <footer class="sticky-footer">
+</div>
+        <footer>
             <p>This is the footer of my page!</p>
         </footer>
+
 
         {{-- jQuery, Popper.js, and Bootstrap JS --}}
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
@@ -71,8 +71,8 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"
             integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous">
         </script>
-
     </div>
+    </wrapper>
 </body>
 
 </html>

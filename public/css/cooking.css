@@ -1,7 +1,7 @@
 
 body {
     padding: 1%;
-    /* margin: 1%; */
+    margin: 1%;
 }
 
 /* center content in viewport */
@@ -31,11 +31,12 @@ html {
   min-height: 100%;
 }
 body {
-  /* margin-bottom: 60px; Margin bottom by footer height */
+  margin-bottom: 60px;
+  Margin bottom by footer height;
 }
 footer {
   position: absolute;
-  bottom: 0;
+  bottom: 0px;
   width: 100%;
   margin: 0 auto;
   height: 60px; /* Set the fixed height of the footer here */
@@ -44,16 +45,13 @@ footer {
 
 }
 
-/* Make button looks like aglyphicon */
+/* Make button looks like a glyphicon */
 .glyphicon-button {
   background-color: transparent;
   border: none;
 }
 
-.form-inline {
-    display: inline;
-}
-
-.button-inline {
+/* Make elements display as inline-block */
+.inline-block {
     display: inline-block;
 }

@@ -7,8 +7,7 @@
     <h1>Zutat {{ $incredient->incredient_de }} bearbeiten</h1>
 </header>
 <main>
-
-    <form method="POST" action="{{ route('incredients.update', [$incredient->id]) }}">
+    <form class="inline-block" method="POST" action="{{ route('incredients.update', [$incredient->id]) }}">
         @csrf
         @method('PUT')
 
@@ -17,7 +16,7 @@
             <input type="text" class="form-control" name="incredient_de" id="incredient" placeholder="Zutat"
                 value="{{ $incredient->incredient_de }}">
         </div>
-        <div class="form-group col-md-4">
+        <div class="form-group">
             <label for="food_group">Zutatenart</label>
             <select class="custom-select" id="food_group" name="food_group_id">
                 <option value=""></option>
@@ -27,7 +26,7 @@
                 @endforeach
             </select>
         </div>
-        <div class="form-group col-md-4">
+        <div class="form-group">
             <label for="grocery_division">Abteilung</label>
             <select class="custom-select" id="grocery_division" name="grocery_division_id">
                 <option value=""></option>
@@ -41,9 +40,10 @@
 
         <input type="submit" class="btn btn-primary" value="Speichern">
         <input type="button" class="btn btn-dark" onclick="location.href='{{ route('incredients') }}'; return false;" value="Abbrechen">
-    </form><br>
-    {{-- Delete button needs ann own form to change POST method into "DELETE" --}}
-    <form method="POST" action="{{ route('incredients.delete', [$incredient->id]) }}">
+    </form>
+
+    {{-- Delete button needs an own form to change POST method into "DELETE" --}}
+    <form class="inline-block" method="POST" action="{{ route('incredients.delete', [$incredient->id]) }}">
         @csrf
         @method('DELETE')
         <input type="submit" name="submitted" class="btn btn-danger"

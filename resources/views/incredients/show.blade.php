@@ -3,9 +3,9 @@
 
 @section('content')
 
-<head>
+<header>
     <h1>Zutat {{ $incredient->incredient_de }}</h1>
-</head>
+</header>
 <main>
 
     <table class="table table-responsive">
