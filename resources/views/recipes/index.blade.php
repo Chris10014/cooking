@@ -11,8 +11,11 @@
     <section>
         <table class="table table-striped table-dark">
             <thead>
-                <th></th>
-                <th>Rezepttitel</th>
+                <tr>
+                    <th></th>
+                    <th>Rezepttitel</th>
+                    <th>Aktion</th>
+                </tr>
             </thead>
             <tbody>
                 @foreach($recipes as $recipe)
@@ -70,6 +73,9 @@
                         </details>
                         @else
                         @endif
+                    </td>
+                    <td>
+                        <a href="{{ route('recipes.edit', [$recipe->id]) }}"><span><i class="fas fa-pen"></i></span></a>
                     </td>
                 </tr>
                 @endforeach

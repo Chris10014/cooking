@@ -38,4 +38,9 @@ class Incredient extends Model
             ->withPivot(['quantity', 'unit_id']);
     }
 
+    public function isPartOfThe($recipe)
+    {
+        return $this->recipes()->where('recipe_id', $recipe->id)->exists();
+    }
+
 }

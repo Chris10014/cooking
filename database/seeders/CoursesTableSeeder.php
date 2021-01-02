@@ -1,7 +1,5 @@
 <?php
 
-namespace Database\Seeders;
-
 use Illuminate\Database\Seeder;
 
 class CoursesTableSeeder extends Seeder
@@ -14,33 +12,33 @@ class CoursesTableSeeder extends Seeder
      */
     public function run()
     {
+        
 
-
-        \DB::table('courses')->delete();
-
-        \DB::table('courses')->insert(array (
-            0 =>
+        \DB::table('Courses')->delete();
+        
+        \DB::table('Courses')->insert(array (
+            0 => 
             array (
                 'id' => 1,
                 'de' => 'Vorspeise',
                 'created_at' => '2020-10-19 19:47:37',
                 'updated_at' => '2020-10-19 19:47:37',
             ),
-            1 =>
+            1 => 
             array (
                 'id' => 2,
                 'de' => 'Suppe',
                 'created_at' => '2020-10-19 19:47:37',
                 'updated_at' => '2020-10-19 19:47:37',
             ),
-            2 =>
+            2 => 
             array (
                 'id' => 3,
                 'de' => 'Hauptgericht',
                 'created_at' => '2020-10-19 19:47:37',
                 'updated_at' => '2020-10-19 19:47:37',
             ),
-            3 =>
+            3 => 
             array (
                 'id' => 4,
                 'de' => 'Nachtisch',
@@ -48,7 +46,7 @@ class CoursesTableSeeder extends Seeder
                 'updated_at' => '2020-10-19 19:47:37',
             ),
         ));
-
-
+        
+        
     }
 }

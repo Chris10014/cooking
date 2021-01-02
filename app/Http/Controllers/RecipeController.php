@@ -7,8 +7,10 @@ use App\Models\Recipe;
 use App\Models\Course;
 use App\Models\Dish_type;
 use App\Models\Cookbook;
+use App\Models\Food_group;
 use App\Models\Incredient;
 use App\Models\Unit;
+use DOMDocument;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -40,9 +42,10 @@ class RecipeController extends Controller
         $dish_types = Dish_type::all('id', 'de');
         $cookbooks = Cookbook::all('id', 'title');
         $incredients = Incredient::all('id', 'incredient_de');
+        $food_groups = Food_group::all('id', 'food_group_de');
         $units = Unit::all('id', 'abbreviation');
 
-        return view('recipes.create', compact('courses', 'dish_types', 'cookbooks', 'incredients', 'units'));
+        return view('recipes.create', compact('courses', 'dish_types', 'cookbooks', 'incredients', 'food_groups', 'units'));
     }
 
     /**
@@ -53,7 +56,7 @@ class RecipeController extends Controller
      */
     public function store(Request $request)
     {
-
+        // dd($request->all());
         $this->validateRecipe(); // validates the attributes without the recipe_image
 
         // if the request contains an image
@@ -68,25 +71,10 @@ class RecipeController extends Controller
         $recipe->save();
 
         if (count(request('incredient_ids')) != 0) {
-            /**
-             * To eliminate NULL values from the request arrays to sync with the incredient_ids array.
-             * Because <checkbox> field doesn't post NULL values but <select> field does.
-             *  */
-            $quantities = [];
-            $unit_ids = [];
-            foreach (request('quantities') as $quantity) {
-                if ($quantity != NULL) {
-                    array_push($quantities, $quantity);
-                }
-            }
-            foreach (request('unit_ids') as $unit_id) {
-                if ($unit_id != NULL) {
-                    array_push($unit_ids, $unit_id);
-                }
-            }
+
             //attach releationship to link table including additional fields
             for ($i = 0; $i < count(request('incredient_ids')); $i++) {
-                $recipe->incredients()->attach(request('incredient_ids')[$i], ['quantity' => $quantities[$i], 'unit_id' => $unit_ids[$i]]);
+                $recipe->incredients()->attach(request('incredient_ids')[$i], ['quantity' => request('quantities')[$i], 'unit_id' => request('unit_ids')[$i]]);
             }
         }
 
@@ -101,7 +89,7 @@ class RecipeController extends Controller
      */
     public function show($id)
     {
-        //
+        dd('recipe show');
     }
 
     /**
@@ -112,7 +100,7 @@ class RecipeController extends Controller
      */
     public function edit($id)
     {
-        //
+        dd('recipe edit');
     }
 
     /**
@@ -124,7 +112,7 @@ class RecipeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        dd('recipe update');
     }
 
     /**
@@ -135,7 +123,7 @@ class RecipeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        dd('recipe delete');
     }
 
     public function validateRecipe()
@@ -143,13 +131,13 @@ class RecipeController extends Controller
         return request()->validate([
             'name' => ['required', 'min:5'],
             'preparation_time' => ['nullable', 'numeric'],
-            'dish_type_id' => ['required', 'integer', 'exists:dish_types,id'],
+            'dish_type_id' => ['required', 'exists:dish_types,id'],
             'course_id' => ['required', 'exists:courses,id'],
             'cookbook_id' => ['nullable','required_with:page', 'exists:cookbooks,id'],
             'page' => ['nullable', 'required_with:cookbook_id'],
-            'incredient_ids' => ['exists:incredients,id'],
-            'quantities' => [],
-            'unit_ids' =>[]
+            'incredient_ids' => ['nullable', 'required_with:quantities', 'exists:incredients,id'],
+            'quantities' => ['required_with:unit_ids'],
+            'unit_ids' =>['required_with:quantities']
         ]);
     }
 
@@ -184,5 +172,52 @@ class RecipeController extends Controller
         $replaced  = str_replace($source_characters, $target_characters, $string);
 
         return $replaced;
+    }
+
+    public function search($str)
+    {
+        $incredients = Incredient::select("id", "incredient_de")
+            ->where('incredient_de', 'LIKE', "%" . $str . "%")
+            ->get();
+
+        $units = Unit::all('id', 'abbreviation');
+
+        foreach($incredients AS $incredient) {
+
+            if(isset($recipe) && $recipe->isPartOfThe($incredient)) {
+                // add the deleteIncredient() function
+            } else {
+                // add the addIncredient() function
+                $fct = "<span onclick='addIncredientToRecipe(" . $incredient->id . ")'><i class='fas fa-plus-square'></i></span>";
+            }
+
+            // Everything after echo will be send to the <div id='result'></div> of recipe.create via ajax
+            echo
+            "<div id='foundIncredients" . $incredient->id . "'>
+                <div class='inline-block col-md-3' id='incredientName" . $incredient->id . "'>" .
+                    $incredient->incredient_de . "
+                </div>
+
+                <div class='inline-block col-md-4'>
+                    <label for='quantity" . $incredient->id . "'>Menge: </label>
+                    <input type='number' step='0.1' lang='de' name='quantity' id='quantity" . $incredient->id . "' placeholder='Menge'>
+                </div>
+                <div class='inline-block col-md-2'>
+                    <label for='units" . $incredient->id . "'>Einheit: </label>
+                    <select name='units' id='units" . $incredient->id . "'>";
+                echo "<option value='0'></option>";
+               foreach ($units as $unit) {
+                    echo "<option value='" . $unit->id . "'>" . $unit->abbreviation . "</option>";
+                }
+                echo "</select>
+                </div>
+                <div class='inline-block col-md-2'>
+                    $fct
+                </div>
+            </div>
+            <br>";
+
+        }
+
     }
 }

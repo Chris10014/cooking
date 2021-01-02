@@ -7,15 +7,13 @@
     <h1>Neue Zutat eingeben</h1>
 </header>
 <main>
-
-
     <form method="POST" action="{{ route("incredients.store") }}">
 
         @csrf
 
         <div class="form-group">
-            <label for="incredient_de">Zutat</label>
-            <input type="text" class="form-control" name="incredient_de" id="incredient_de" placeholder="Zutat"
+            <label for="incredient">Zutat</label>
+            <input type="text" class="form-control" name="incredient_de" id="incredient" placeholder="Zutat"
                 value="{{ old('incredient_de') }}">
             @error('incredient_de')
             <div class="alert alert-danger">{{ $message }}</div>

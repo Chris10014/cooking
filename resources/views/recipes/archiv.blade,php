@@ -1,0 +1,49 @@
+// select incredients for a recipe
+ <div>
+            {{-- laracast "Laravel From Scratch episode 33" timestamp 02:00 --}}
+            @foreach($food_groups->sortBy('food_group_de') as $food_group)
+            <details>
+                <summary>{{ $food_group->food_group_de }}</summary>
+                @foreach($food_group->incredients->sortBy('incredient_de') as $incredient)
+                <div class="inline-block col-md-3">
+
+                    <input type="checkbox" name="incredients[incredient_ids][{{ $loop->index }}]" id="{{ $incredient->incredient_de }}"
+                        value="{{ $incredient->id }}" @if(in_array($incredient->id,
+                    old('incredient_ids', [])))
+                    checked
+                    @endif
+                    >
+                    <label for="{{ $incredient->incredient_de }}">{{ $incredient->incredient_de }}</label>
+                    @error('incredient_ids')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
+
+                </div>
+                <div class="inline-block col-md-2">
+                    <label for="quantity {{ $incredient->id }}">Menge</label>
+                    <input type="number" step="0.1" class="form-control" name="incredients[quantities][]" id="quantity {{ $incredient->id }}" placeholder="Menge"
+                        value="{{ old('quantities') }}">
+                    @error('quantities')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
+
+                </div>
+                <div class="inline-block col-md-2">
+                    <label for="unit {{ $incredient->id }}">Einheit:</label>
+                    <select class="custom-select" id="unit {{ $incredient->id }}" name="incredients[unit_ids][]">
+                        <option value=""></option>
+                        @foreach($units->sortBy('abbreviation') as $unit)
+                        <option value="{{ $unit->id }}" {{in_array($unit->id, old('unit_ids', []))? 'selected' : '' }}>
+                            {{ $unit->abbreviation }}</option>
+                        @endforeach
+                    </select>
+
+                    @error('unit_id')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
+                </div><hr>
+                @endforeach
+            </details>
+            @endforeach
+
+        </div>

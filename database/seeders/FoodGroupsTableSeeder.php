@@ -84,15 +84,50 @@ class FoodGroupsTableSeeder extends Seeder
             array (
                 'id' => 10,
                 'food_group_de' => 'Obst',
-                'created_at' => '2020-12-13 18:31:01',
-                'updated_at' => '2020-12-13 18:31:01',
+                'created_at' => '2020-12-13 18:28:54',
+                'updated_at' => '2020-12-13 18:28:54',
             ),
             10 => 
             array (
                 'id' => 11,
                 'food_group_de' => 'Sonstiges',
-                'created_at' => '2020-12-13 18:31:01',
-                'updated_at' => '2020-12-13 18:31:01',
+                'created_at' => '2020-12-13 18:28:54',
+                'updated_at' => '2020-12-13 18:28:54',
+            ),
+            11 => 
+            array (
+                'id' => 31,
+                'food_group_de' => 'Kräuter',
+                'created_at' => '2020-12-20 14:04:25',
+                'updated_at' => '2020-12-20 14:04:25',
+            ),
+            12 => 
+            array (
+                'id' => 32,
+                'food_group_de' => 'Gewürze, Fonds, Pasten',
+                'created_at' => '2020-12-20 14:04:25',
+                'updated_at' => '2020-12-20 14:04:25',
+            ),
+            13 => 
+            array (
+                'id' => 33,
+                'food_group_de' => 'Nüsse',
+                'created_at' => '2020-12-20 14:04:25',
+                'updated_at' => '2020-12-20 14:04:25',
+            ),
+            14 => 
+            array (
+                'id' => 34,
+                'food_group_de' => 'Getränke',
+                'created_at' => '2020-12-20 14:04:25',
+                'updated_at' => '2020-12-20 14:04:25',
+            ),
+            15 => 
+            array (
+                'id' => 35,
+                'food_group_de' => 'Fertigwaren',
+                'created_at' => '2020-12-20 14:04:25',
+                'updated_at' => '2020-12-20 14:04:25',
             ),
         ));
         

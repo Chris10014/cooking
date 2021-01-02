@@ -45,4 +45,5 @@ class Recipe extends Model
         return $this->belongsToMany('App\Models\Incredient')
             ->withPivot(['quantity', 'unit_id']);
     }
+    
 }

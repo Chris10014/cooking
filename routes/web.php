@@ -6,6 +6,7 @@ use App\Http\Controllers\PublisherController;
 use App\Http\Controllers\CookbookController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\IncredientController;
+use App\Http\Controllers\SearchController;
 use App\Models\Incredient;
 
 /*
@@ -45,13 +46,20 @@ Route::get("cookbooks/{cookbook}", [CookbookController::Class, "show"])->name('c
 Route::get("recipes", [RecipeController::Class, "index"])->name('recipes');
 Route::post("recipes", [RecipeController::Class, "store"])->name('recipes.store');
 Route::get("recipes/create", [RecipeController::Class, "create"])->name('recipes.create');
+Route::get("recipes/search/{str}", [RecipeController::Class, "search"])->name('recipes.search');
+Route::delete("recipes/{id}", [RecipeController::Class, "destroy"])->name('[recipes.delete');
 Route::get("recipes/{recipe}", [RecipeController::Class, "show"])->name('recipes.show');
+Route::get("recipes/{incredient}/edit", [RecipeController::Class, "edit"])->name('recipes.edit');
+Route::put("recipes/{incredient}", [RecipeController::Class, "update"])->name('recipes.update');
+
 
 Route::get("incredients", [IncredientController::Class, "index"])->name('incredients');
 Route::post("incredients", [IncredientController::Class, "store"])->name('incredients.store');
 Route::get("incredients/create", [IncredientController::Class, "create"])->name('incredients.create');
+
 Route::delete("incredients/{id}", [IncredientController::Class, "destroy"])->name('incredients.delete');
 Route::get("incredients/{incredient}", [IncredientController::Class, "show"])->name('incredients.show');
 Route::get("incredients/{incredient}/edit", [IncredientController::Class, "edit"])->name('incredients.edit');
 Route::put("incredients/{incredient}", [IncredientController::Class, "update"])->name('incredients.update');
 
+Route::get("search", [SearchController::Class, "index"]);
