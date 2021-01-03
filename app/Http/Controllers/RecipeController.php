@@ -108,8 +108,9 @@ class RecipeController extends Controller
         $courses = Course::all('id', 'de');
         $incredients = Incredient::all('id', 'incredient_de');
         $cookbooks = Cookbook::all('id', 'title');
+        $units = Unit::all('id', 'abbreviation');
 
-        return view('recipes.edit', compact('recipe', 'dish_types', 'courses', 'cookbooks', 'incredients'));
+        return view('recipes.edit', compact('recipe', 'dish_types', 'courses', 'cookbooks', 'incredients', 'units'));
     }
 
     /**

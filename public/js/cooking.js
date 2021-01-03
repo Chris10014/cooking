@@ -52,7 +52,6 @@ function addIncredientToRecipe(incredientId) {
     // Create the form input fields to submit them
     div.class = "inline-block col-md-3";
     var inputIncredient = document.createElement('input');
-    inputIncredient.type = 'text';
     inputIncredient.name = 'incredient_ids[]';
     inputIncredient.value = incredientId;
     inputIncredient.id = "incredient" + incredientId;
@@ -105,15 +104,15 @@ function addIncredientToRecipe(incredientId) {
     document.getElementById('foundIncredients' + incredientId).setAttribute('style','display:none');
 }
 
-function deleteIncredientFromRecipe() {
-    return confirm("delete Incredient?");
+function deleteIncredientFromRecipe(recipeId, incredientId) {
+    return confirm("delete Incredient " + incredientId + " from " + recipeId + "?");
 }
 
-// Removes an element from the DOM by a given id1 and show anothe hidden element by id2
-function removeElementById(id1, id2) {
+// Removes an element from the DOM by a given id1 and show another hidden element by id2
+function removeElementById(id1, id2='not used') {
     document.getElementById(id1).remove();
 
-    if(typeof id2 != "undefined") {
+    if(typeof id2 != 'not used') {
         document.getElementById(id2).setAttribute('style','display:true');
     }
 

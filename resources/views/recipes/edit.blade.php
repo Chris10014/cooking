@@ -71,16 +71,36 @@
         <div id="incredientsList">
             @if(count($recipe->incredients) != 0)
             <p>Zutatenliste</p>
-            <ul>
-                @foreach ($recipe->incredients as $incredient)
-                <li>{{ $incredient->incredient_de }} <span onclick="deleteIncredientFromRecipe()" <i class='fas fa-trash-alt'></i></span></li>
-                @endforeach
-            </ul>
+            @foreach ($recipe->incredients as $incredient)
+            <div class="row" id="row" . {{ $incredient->id }}>
+                <div class="col-md-2">
+                    <p>{{ $incredient->incredient_de }}: </p>
+                </div>
+                <input type="hidden" name="incredient_ids[]" id="incredient" . {{ $incredient->id }} value={{ $incredient->id }}>
+                <div class="col-auto">
+                    <input type="number" step="0.1" lang="de" name="quantities[]" id="quantity" . {{ $incredient->id }}
+                        value={{ $incredient->pivot->quantity }} style="width:100px">
+                </div>
+                <div class="col-auto">
+                    <select name="units[]" id="unit" . {{ $incredient->id }}>
+                        @foreach($units AS $unit)
+                        <option value={{ $unit->id }} @if($unit->id == $incredient->pivot->unit_id)
+                            selected=true
+                            @endif
+                            >{{ $unit->abbreviation }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <span onclick="deleteIncredientFromRecipe({{ $recipe->id }}, {{ $incredient->id }})"><i class='fas fa-trash-alt'></i></span>
+                </div>
+            </div>
+            </div>
+            @endforeach
             @else
             <p>Keine Zutaten zugeordnet</p>
             @endif
 
-        </div>
 
         <div>
             <br>
