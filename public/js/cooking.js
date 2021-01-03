@@ -105,6 +105,10 @@ function addIncredientToRecipe(incredientId) {
     document.getElementById('foundIncredients' + incredientId).setAttribute('style','display:none');
 }
 
+function deleteIncredientFromRecipe() {
+    return confirm("delete Incredient?");
+}
+
 // Removes an element from the DOM by a given id1 and show anothe hidden element by id2
 function removeElementById(id1, id2) {
     document.getElementById(id1).remove();

@@ -17,7 +17,7 @@ class CreateIncredientRecipeTable extends Migration
             $table->foreignId('incredient_id')->onDelete('cascade')->constrained();
             $table->foreignId('recipe_id')->onDelete('cascade')->constrained();
             $table->double('quantity', 4, 1)->nullable();
-            $table->foreignId('unit_id')->nullable()->cascadeOnDelete()->constrained();
+            $table->foreignId('unit_id')->nullable()->cascadeOnUpdate()->constrained();
             $table->boolean('main_incredient')->nullable();
         });
     }

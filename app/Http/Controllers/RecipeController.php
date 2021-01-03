@@ -8,13 +8,14 @@ use App\Models\Course;
 use App\Models\Dish_type;
 use App\Models\Cookbook;
 use App\Models\Food_group;
+use App\Models\Grocery_division;
 use App\Models\Incredient;
 use App\Models\Unit;
 use DOMDocument;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-
+use League\CommonMark\Inline\Element\Code;
 
 class RecipeController extends Controller
 {
@@ -70,7 +71,7 @@ class RecipeController extends Controller
         //Store to database
         $recipe->save();
 
-        if (count(request('incredient_ids')) != 0) {
+        if ((request('incredient_ids')) != NULL) {
 
             //attach releationship to link table including additional fields
             for ($i = 0; $i < count(request('incredient_ids')); $i++) {
@@ -100,7 +101,15 @@ class RecipeController extends Controller
      */
     public function edit($id)
     {
-        dd('recipe edit');
+        // dd('recipe edit: ' . $id);
+        $recipe = Recipe::find($id);
+
+        $dish_types = Dish_type::all('id', 'de');
+        $courses = Course::all('id', 'de');
+        $incredients = Incredient::all('id', 'incredient_de');
+        $cookbooks = Cookbook::all('id', 'title');
+
+        return view('recipes.edit', compact('recipe', 'dish_types', 'courses', 'cookbooks', 'incredients'));
     }
 
     /**
@@ -123,13 +132,16 @@ class RecipeController extends Controller
      */
     public function destroy($id)
     {
-        dd('recipe delete');
+        $recipe = Recipe::find($id);
+        $recipe->delete();
+
+        return redirect('/recipes');
     }
 
     public function validateRecipe()
     {
         return request()->validate([
-            'name' => ['required', 'min:5'],
+            'name' => ['required', 'min:5', 'unique:recipes,name'],
             'preparation_time' => ['nullable', 'numeric'],
             'dish_type_id' => ['required', 'exists:dish_types,id'],
             'course_id' => ['required', 'exists:courses,id'],
