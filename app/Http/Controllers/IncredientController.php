@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Incredient;
 use App\Models\Food_group;
 use App\Models\Grocery_division;
+use Illuminate\Validation\Rule;
 
 class IncredientController extends Controller
 {
@@ -78,10 +79,10 @@ class IncredientController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Incredient $incredient)
     {
 
-        $incredient = Incredient::find($id);
+        // $incredient = Incredient::find($id);
 
         $food_groups = Food_group::all('id', 'food_group_de');
         $grocery_divisions = Grocery_division::all('id', 'division_de');
@@ -96,15 +97,15 @@ class IncredientController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Incredient $incredient)
     {
         request()->validate([
-            'incredient_de' => ['required', 'min:2'],
+            'incredient_de' => ['required', 'min:2', Rule::unique('incredients')->ignore($incredient->id)],
             'food_group_id' => ['required', 'exists:food_groups,id'],
             'grocery_division_id' => ['nullable', 'exists:grocery_divisions,id'],
         ]);
 
-        $incredient = Incredient::find($id);
+        // $incredient = Incredient::find($id);
 
         $incredient->incredient_de = request('incredient_de');
         $incredient->food_group_id = request('food_group_id');
@@ -112,8 +113,6 @@ class IncredientController extends Controller
 
         $incredient->save();
 
-        //todo: send update attribute
-$test = "test";
         return redirect('incredients');
 
     }

@@ -47,10 +47,11 @@ Route::get("recipes", [RecipeController::Class, "index"])->name('recipes');
 Route::post("recipes", [RecipeController::Class, "store"])->name('recipes.store');
 Route::get("recipes/create", [RecipeController::Class, "create"])->name('recipes.create');
 Route::get("recipes/search/{str}", [RecipeController::Class, "search"])->name('recipes.search');
+Route::get("recipes/deleteIncredientFromRecipe/{recipe_id}/{incredient_id}", [RecipeController::Class, "deleteIncredientFromRecipe"])->name('recipes.deleteIncredientFromRecipe');
 Route::delete("recipes/{id}", [RecipeController::Class, "destroy"])->name('recipes.delete');
 Route::get("recipes/{recipe}", [RecipeController::Class, "show"])->name('recipes.show');
-Route::get("recipes/{incredient}/edit", [RecipeController::Class, "edit"])->name('recipes.edit');
-Route::put("recipes/{incredient}", [RecipeController::Class, "update"])->name('recipes.update');
+Route::get("recipes/{recipe}/edit", [RecipeController::Class, "edit"])->name('recipes.edit');
+Route::put("recipes/{recipe}", [RecipeController::Class, "update"])->name('recipes.update');
 
 
 Route::get("incredients", [IncredientController::Class, "index"])->name('incredients');

@@ -15,6 +15,9 @@
             <label for="incredient">Zutat</label>
             <input type="text" class="form-control" name="incredient_de" id="incredient" placeholder="Zutat"
                 value="{{ $incredient->incredient_de }}">
+                @error('incredient_de')
+                <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
         </div>
         <div class="form-group">
             <label for="food_group">Zutatenart</label>
@@ -25,6 +28,9 @@
                     {{ $food_group->food_group_de }}</option>
                 @endforeach
             </select>
+            @error('food_group_id')
+            <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
         </div>
         <div class="form-group">
             <label for="grocery_division">Abteilung</label>
@@ -36,6 +42,9 @@
                     {{ $grocery_division->division_de }}</option>
                 @endforeach
             </select>
+            @error('grocery_division_id')
+            <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
         </div>
 
         <input type="submit" class="btn btn-primary" value="Speichern">

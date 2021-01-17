@@ -11,7 +11,7 @@
         @csrf
 
         <div class="form-group">
-            <label for="recipeName">Rezept</label>
+            <label for="recipeName">Rezept *</label>
             <input type="text" class="form-control" name="name" id="recipeName" placeholder="Rezeptname"
                 value="{{ old('name') }}">
             @error('name')
@@ -51,6 +51,7 @@
         </div>
 
         <div>
+            <p>Art *</p>
             @foreach($dish_types->sortBy('de') as $dish_type)
                 <input type="radio" name="dish_type_id" id="{{ $dish_type->de }}" value="{{ $dish_type->id }}"
                     {{ old('dish_type_id') == $dish_type->id ? 'checked' : '' }}>
@@ -62,6 +63,7 @@
         </div>
 
         <div>
+            <p>Gang *</p>
             @foreach($courses->sortBy('id') as $course)
                 <input type="radio" name="course_id" id="{{ $course->id }}" value="{{ $course->id }}"
                     {{ old('course_id') == $course->id ? 'checked' : '' }}>
@@ -80,16 +82,19 @@
             <div class="alert alert-danger">{{ $message }}</div>
             @enderror
         </div>
+        <p>* Pflichtfelder</p>
 
         <div id="incredientsList"><p>Zutatenliste</p></div>
 
-        <div>
-            <br>
-            <Input type="submit" class="btn btn-primary" value="Speichern" onclick="return confirm('Alle Zutaten eingegeben?')">
-        </div><br>
+    <div>
+        <br>
+        <Input type="submit" class="btn btn-primary" value="Speichern" onclick="return confirm('Alle Zutaten eingegeben?')">
+        <input type="button" class="btn btn-dark" onclick="location.href='{{ route('recipes') }}'; return false;" value="Abbrechen">
+    </div><br>
     </form>
 
     <div>
+        <br>
         <label for="searchIncredient">Zutat suchen <span class="form-control-feedback"><i
                     class="fas fa-search"></i></span></label>
         <input type="text" class="form-control" name="incredient" id="searchIncredient" placeholder="Zutat eingeben"
