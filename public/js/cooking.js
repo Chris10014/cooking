@@ -176,7 +176,7 @@ function addIncredientToRecipe(incredientId) {
 
 function deleteIncredientFromRecipe(recipeId, incredientId, incredientName) {
     // confirm or dismiss the delete action
-    var result = confirm(incredientName + ' aus dem Rezept löschen?\nrow' + incredientId);
+    var result = confirm(incredientName + ' aus dem Rezept löschen?');
 
     if(result == true) {
         var url = "/cooking/recipes/deleteIncredientFromRecipe/" + recipeId + "/" + incredientId;

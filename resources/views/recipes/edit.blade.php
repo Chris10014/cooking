@@ -134,14 +134,12 @@
             @endif
         </div>
 
-
-
-
         <div>
             <br>
             <input type="submit" class="btn btn-primary" value="Speichern" onclick="return confirm('Alle Zutaten eingegeben?')">
             <input type="button" class="btn btn-dark" onclick="location.href='{{ route('recipes') }}'; return false;" value="Abbrechen">
-        </div><br>
+        </div>
+        <br>
     </form>
 
     {{-- Delete button needs an own form to change POST method into "DELETE" --}}

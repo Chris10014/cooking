@@ -7,7 +7,7 @@
     <h1>Zutat {{ $incredient->incredient_de }} bearbeiten</h1>
 </header>
 <main>
-    <form class="inline-block" method="POST" action="{{ route('incredients.update', [$incredient->id]) }}">
+    <form class="" method="POST" action="{{ route('incredients.update', [$incredient->id]) }}">
         @csrf
         @method('PUT')
 
@@ -46,9 +46,10 @@
             <div class="alert alert-danger">{{ $message }}</div>
             @enderror
         </div>
-
+        <br>
         <input type="submit" class="btn btn-primary" value="Speichern">
         <input type="button" class="btn btn-dark" onclick="location.href='{{ route('incredients') }}'; return false;" value="Abbrechen">
+        <br><br>
     </form>
 
     {{-- Delete button needs an own form to change POST method into "DELETE" --}}
