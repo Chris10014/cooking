@@ -57,7 +57,7 @@ Route::put("recipes/{recipe}", [RecipeController::Class, "update"])->name('recip
 Route::get("incredients", [IncredientController::Class, "index"])->name('incredients');
 Route::post("incredients", [IncredientController::Class, "store"])->name('incredients.store');
 Route::get("incredients/create", [IncredientController::Class, "create"])->name('incredients.create');
-
+Route::get("incredients/search/{str}", [IncredientController::Class, "search"])->name('incredients.search');
 Route::delete("incredients/{id}", [IncredientController::Class, "destroy"])->name('incredients.delete');
 Route::get("incredients/{incredient}", [IncredientController::Class, "show"])->name('incredients.show');
 Route::get("incredients/{incredient}/edit", [IncredientController::Class, "edit"])->name('incredients.edit');

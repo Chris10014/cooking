@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use League\CommonMark\Inline\Element\Code;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
+
 
 class RecipeController extends Controller
 {
@@ -194,7 +196,7 @@ class RecipeController extends Controller
             'course_id' => ['required', 'exists:courses,id'],
             'cookbook_id' => ['nullable','required_with:page', 'exists:cookbooks,id'],
             'page' => ['nullable', 'required_with:cookbook_id'],
-            'incredient_ids' => ['nullable', 'required_with:quantities', 'exists:incredients,id'],
+            'incredient_ids' => ['nullable', 'exists:incredients,id'],
             'quantities' => ['required_with:unit_ids'],
             'unit_ids' =>['required_with:quantities', 'exists:units,id']
         ]);
@@ -218,7 +220,7 @@ class RecipeController extends Controller
         // Todo: check if already an image exists
         // If yes: delete it
 
-        return request()->file('recipe_image')->storeAs('recipe_images', "_" . $this->str_replace_umlaute(request('name')));
+        return "storage/app/" . request()->file('recipe_image')->storeAs('recipe_images', $this->str_replace_umlaute(request('name')));
     }
 
     public function deleteImageFromRecipe()
@@ -250,52 +252,18 @@ class RecipeController extends Controller
         return $replaced;
     }
 
-    public function search($string)
-    {
-        $incredients = Incredient::select("id", "incredient_de")
-            ->where('incredient_de', 'LIKE', "%" . $string . "%")
+    public function search($string) {
+
+        $recipes = Recipe::with(['cookbook', 'incredients', 'dish_type'])
+            ->where('name', 'LIKE', "%" . $string . "%")
             ->get();
 
-        $units = Unit::all('id', 'abbreviation');
-
-
-        foreach($incredients AS $incredient) {
-
-            if(isset($recipe) && $recipe->isPartOfThe($incredient)) {
-                // add the deleteIncredient() function
-                // Not needed, delete function is added in the view
-            } else {
-                // add the addIncredient() function
-                $fct = "<span onclick='addIncredientToRecipe(" . $incredient->id . ")'><i class='fas fa-plus-square'></i></span>";
-            }
-
-
-            // Everything after echo will be send to the <div id='result'></div> of recipe.create via ajax
-            echo
-            "<div class='row' id='foundIncredients" . $incredient->id . "'>
-                <div class='col-md-3' id='incredientName" . $incredient->id . "'>" .
-                    $incredient->incredient_de . "
-                </div>
-
-                <div class='col-auto'>
-                    <label for='quantity" . $incredient->id . "'>Menge: </label>
-                    <input type='number' step='0.1' lang='de' name='quantity' id='quantity" . $incredient->id . "' placeholder='Menge'>
-                </div>
-                <div class='col-auto'>
-                    <label for='units" . $incredient->id . "'>Einheit: </label>
-                    <select name='unit_ids' id='units" . $incredient->id . "'>";
-                echo "<option value='0'></option>";
-               foreach ($units as $unit) {
-                    echo "<option value='" . $unit->id . "'>" . $unit->abbreviation . "</option>";
-                }
-                echo "</select>
-                </div>
-                <div class='inline-block col-md-2'>
-                    $fct
-                </div>
-            </div>
-            <br>";
-
+        // $units = Unit::all('id', 'abbreviation');
+        if(count($recipes) > 0) {
+            echo json_encode($recipes);
+        } else {
+            $_SESSION['message']  = "Keine passenden Rezepte gefunden.";
+            echo "false";
         }
 
     }

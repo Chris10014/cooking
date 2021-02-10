@@ -98,7 +98,7 @@
         <label for="searchIncredient">Zutat suchen <span class="form-control-feedback"><i
                     class="fas fa-search"></i></span></label>
         <input type="text" class="form-control" name="incredient" id="searchIncredient" placeholder="Zutat eingeben"
-            onkeyup="liveSearchForItems(this.value,'searchResult', '/cooking/recipes/search/')">
+            onkeyup="liveSearchForItems(this.value,'searchResult', '/cooking/incredients/search/')">
     </div><br>
     <div id="searchResult">
         {{-- Div to display the result of the incredient search --}}

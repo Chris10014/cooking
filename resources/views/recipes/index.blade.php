@@ -8,8 +8,15 @@
 </header>
 <main>
     <p>Rezept hinzufügen <a href="{{ route('recipes.create') }}"><span><i class="fas fa-plus-square"></i></span></a></p>
+    <label for="searchRecipes">Rezepte suchen <span class="form-control-feedback"><i
+                class="fas fa-search"></i></span></label>
+    <input type="text" class="form-control" name="recipe" id="searchRecipes" placeholder="Suchtext eingeben für Rezept oder Zutat">
+    </div><br>
+    <div id="message">
+        {{-- Div to display message if no result found --}}
+    </div><br>
     <section>
-        <table class="table table-striped table-dark">
+        <table class="table table-striped table-dark" id="recipeTable">
             <thead>
                 <tr>
                     <th></th>
@@ -17,41 +24,17 @@
                     <th>Aktion</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="recipeTableBody">
                 @foreach($recipes as $recipe)
                  <tr>
-                    <td rowspan="2">
-                        <img src="{{ asset('storage/app/' . $recipe->recipe_image) }}" alt="dish" width="100px">
+                    <td>
+                        <img src="{{ asset($recipe->recipe_image) }}" onerror= "src='/cooking/storage/app/recipe_images/mealPlaceholder.jpg'" alt="Gericht" width="100px">
                     </td>
                     <td>
-                        @switch($recipe->dish_type->de)
+                        <span><i class="{{ $recipe->dish_type->glyphicon_fontawesome }}"></i></span>
 
-                        @case('Fleisch')
-                        <span><i class="fas fa-drumstick-bite"></i></span>
-                        @break
+                       {{ $recipe->name }}
 
-                        @case('vegetarisch')
-                        <span><i class="fas fa-carrot"></i></span>
-                        @break
-
-                        @case('vegan')
-                        <span><i class="fas fa-seedling"></i></span>
-                        @break
-
-                        @case('Fisch')
-                        <span><i class="fas fa-fish"></i></span>
-                        @break
-
-                        @case('Pasta')
-                        <span><i class="fas fa-pizza-slice"></i></span>
-                        @break
-
-                        @endswitch
-
-                        {{ $recipe->name }}</td>
-                </tr>
-                <tr>
-                    <td>
                         {{ $recipe->cookbook ? $recipe->cookbook->title . ", S. " . $recipe->page : "" }}
                         @if(count($recipe->incredients) != 0)
                         <details>
@@ -72,6 +55,7 @@
                             </ul>
                         </details>
                         @else
+                        <p><i>keine Zutaten eingetragen</i></p>
                         @endif
                     </td>
                     <td>

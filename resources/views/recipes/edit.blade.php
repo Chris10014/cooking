@@ -83,8 +83,8 @@
             @enderror
             </span>
             <span class="inline-block">
-                @if(null !== ("storage/app/$recipe->recipe_image"))
-                <img src="{{ asset('storage/app/' . $recipe->recipe_image) }}" alt="dish" width="100px">
+                @if(null !== ($recipe->recipe_image))
+                <img src="{{ asset($recipe->recipe_image) }}" alt="Kein Bild vorhanden." width="100px">
                 @endif
             </span>
         </div>
@@ -103,7 +103,7 @@
 
             @if(count($recipe->incredients) != 0)
             <p>Zutatenliste</p>
-            @foreach ($recipe->incredients as $incredient)
+            @foreach ($recipe->incredients->sortBy('incredient_de') as $incredient)
             <div class="row" id="row{{ $incredient->id }}">
                 <div class="col-md-3">
                     <p>{{ $incredient->incredient_de }}: </p>
@@ -155,7 +155,7 @@
         <label for="searchIncredient">Zutat suchen <span class="form-control-feedback"><i
                     class="fas fa-search"></i></span></label>
         <input type="text" class="form-control" name="incredient" id="searchIncredient" placeholder="Zutat eingeben"
-            onkeyup="liveSearchForItems(this.value,'searchResult', '/cooking/recipes/search/')">
+            onkeyup="liveSearchForItems(this.value,'searchResult', '/cooking/incredients/search/')">
     </div><br>
     <div id="searchResult">
         {{-- Div to display the result of the incredient search --}}

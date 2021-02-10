@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Incredient;
 use App\Models\Food_group;
 use App\Models\Grocery_division;
+use App\Models\unit;
 use Illuminate\Validation\Rule;
 
 class IncredientController extends Controller
@@ -130,6 +131,59 @@ class IncredientController extends Controller
         $incredient->delete();
 
         return redirect('/incredients');
+    }
+
+    /**
+     * @param {str} $string string which has to be part of the incredient name
+     * @return {html} returns html code to display the result with input tags
+     */
+
+    public function search($string)
+    {
+        $incredients = Incredient::select("id", "incredient_de")
+        ->where('incredient_de', 'LIKE', "%" . $string . "%")
+            ->get();
+
+        $units = Unit::all('id', 'abbreviation');
+
+
+        foreach ($incredients as $incredient) {
+
+            if (isset($recipe) && $recipe->isPartOfThe($incredient)) {
+                // add the deleteIncredient() function
+                // Not needed, delete function is added in the view
+            } else {
+                // add the addIncredient() function
+                $fct = "<span onclick='addIncredientToRecipe(" . $incredient->id . ")'><i class='fas fa-plus-square'></i></span>";
+            }
+
+
+            // Everything after echo will be send to the <div id='result'></div> of recipe.create via ajax
+            echo
+            "<div class='row' id='foundIncredients" . $incredient->id . "'>
+                <div class='col-md-3' id='incredientName" . $incredient->id . "'>" .
+            $incredient->incredient_de . "
+                </div>
+
+                <div class='col-auto'>
+                    <label for='quantity" . $incredient->id . "'>Menge: </label>
+                    <input type='number' step='0.1' lang='de' name='quantities[]' id='quantity" . $incredient->id . "' placeholder='Menge'>
+                </div>
+                <div class='col-auto'>
+                    <label for='units" . $incredient->id . "'>Einheit: </label>
+                    <select name='unit_ids[]' id='units" . $incredient->id . "'>";
+            echo "<option value='0'></option>";
+            foreach ($units as $unit) {
+                echo "<option value='" . $unit->id . "'>" . $unit->abbreviation . "</option>";
+            }
+            echo "</select>
+                </div>
+                <div class='inline-block col-md-2'>
+                    $fct
+                </div>
+            </div>
+            <br>";
+        }
     }
 
 }
