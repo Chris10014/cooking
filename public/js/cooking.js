@@ -46,14 +46,12 @@ function ajax(url, cFunction, method = "GET") {
 
 $("#searchRecipes").keyup(function () {
     $.getJSON("/cooking/recipes/search/" + $(this).val(), function (data) {
-        window.console && console.log("resp.: " + data);
 
         $("#recipeTableBody").empty();
         $("#message").hide().removeClass("alert alert-danger").html("");
 
         if (typeof data == "object") {
             var recipes = data;
-
             for (i = 0; i < recipes.length; i++) {
                 var recipe = recipes[i];
                 $.each(recipe, function (key, val) {
@@ -61,20 +59,16 @@ $("#searchRecipes").keyup(function () {
                         console.log("key: " + key + " val: " + val + "\n");
                 });
             }
-
             var tableBody = "";
-
             for (i = 0; i < recipes.length; i++) {
                 recipe = recipes[i];
                 dishType = recipe.dish_type;
                 cookbook = recipe.cookbook;
-
                 tableBody +=
                     '<tr><td> \
                 <img src="/cooking/' +
                     recipe.recipe_image +
                     '" onerror=src="/cooking/storage/app/recipe_images/mealPlaceholder.jpg" alt="Gericht" width="100"></td>';
-
                 tableBody +=
                     '<td><p><span><i class="' +
                     dishType.glyphicon_fontawesome +
@@ -88,7 +82,6 @@ $("#searchRecipes").keyup(function () {
                 }
 
                 incredients = recipe.incredients;
-
                 if (incredients.length != 0) {
                     tableBody += "<p><details><summary>Zutaten</summary><ul>";
                     for (k = 0; k < incredients.length; k++) {
@@ -99,7 +92,6 @@ $("#searchRecipes").keyup(function () {
                 } else {
                     tableBody += "<i>keine Zutaten eingetragen</i>";
                 }
-
                 tableBody +=
                     '</td><td><a href="/cooking/recipes/' +
                     recipe.id +
@@ -155,111 +147,35 @@ function liveSearchForItems(str, divId, url) {
     ajax(url + str, showSearchResult);
 }
 
-function liveSearchForRecipes(str, divId, url) {
-    // if (str.length == 0) {
-    //     location.replace("/cooking/recipes/");
-    //     return;
-    // }
-
-    var message = document.getElementById("message");
-    message.innerHTML = ""; // Clear <div id=message>
-    message.classList.remove("alert-danger"); // remove class
-    message.style.display = "none";
-
-    function showSearchResult(xmlhttp) {
-        console.dir(".dir: \n" + JSON.parse(xmlhttp.responseText));
-        var recipes = JSON.parse(xmlhttp.responseText);
-
-        if (recipes.length == 0) {
-            document.getElementById("recipeTable").innerHTML = ""; // Clear table
-            message.innerHTML = "Suche ergab keine Treffer.";
-            message.style.display = "block";
-            message.classList.add("alert-danger");
-
-            return;
-        }
-
-        var dataArray = [];
-
-        for (var i = 0; i < recipes.length; i++) {
-            var data = new Object();
-            if (
-                recipes[i]["recipe_image"] != null &&
-                recipes[i]["recipe_image"].length > 0
-            ) {
-                data.Bild = "/cooking/" + recipes[i]["recipe_image"];
-            } else {
-                data.Bild =
-                    "/cooking/storage/app/recipe_images/mealPlaceholder.jpg";
-            }
-            data.Rezeptname = recipes[i]["name"];
-            data.Aktion = "action";
-            dataArray[dataArray.length] = data;
-        }
-
-        if (dataArray.lengt > 0) {
-            data = Object.keys(dataArray[0]);
-        }
-        var table = document.querySelector("#recipeTable");
-        $("#recipeTable thead, tr>td").remove(); // Clear the tabale head and all rows in the table
-
-        generateTable(table, dataArray);
-        createTableHead(table, data, "Gericht");
-    }
-
-    // ajax(url + str, showSearchResult);
-}
-
 /**
- * Generates the header for a table
- * @param {DOM element} table DOM table element which will contain the table e.g. document.querySelector(id)
- * @param {Object} data Object with key:value pairs to generate the columns headlines e.g. Object {key: value, ...}
+ * Validate recipe forms (create and edit) in the browser
  */
-
-function createTableHead(table, data) {
-    var thead = table.createTHead();
-    var row = thead.insertRow();
-    for (let key of Object.keys(data)) {
-    var th = document.createElement("th");
-    var text = document.createTextNode(key);
-    th.appendChild(text);
-    row.appendChild(th);
-    }
-}
-
-/**
- * Generates table rows
- * @param {DOM element} table DOM table element which will contain the table e.g. document.querySelector(id)
- * @param {Object array} data Array with the content of the columns e.g. Array[ 0: Object{key: value, ...}, 1: Object{key: value, ...} ...]
- * @param {str} alt default: "image" alternative text in case the table conatains an image column (optional)
- * @param {int} width default: 100 The width in px of an image in case the table conatains an image column (optional)
- */
-
-function generateTable(table, data, alt = "image", width = 100) {
-    for (var element of data) {
-        var row = table.insertRow();
-        for (key in element) {
-            var cell = row.insertCell();
-
-            if (
-                key.toLowerCase().includes("image") ||
-                key.toLowerCase().includes("img") ||
-                key.toLowerCase().includes("bild") ||
-                key.toLowerCase().includes("picture")
-            ) {
-                var img = document.createElement("img");
-                img.src = element[key];
-                img.alt = alt;
-                img.width = width;
-
-                cell.appendChild(img);
-            } else {
-                var text = document.createTextNode(element[key]);
-                cell.appendChild(text);
-            }
-        }
-    }
-}
+ $(document).ready(function() {
+     $("#recipeForm").validate({
+         // Place error message below radio button blocks
+         errorPlacement: function(error, element) {
+             error.css({display: 'block'});
+             error.appendTo(element.parent());
+             },
+         errorClass: "alert alert-danger",
+         rules: {
+             name: { required: true, minlength: 5 },
+             preparation_time: { number: true },
+             page: { number: true,
+                required: { depends: function(element) {
+                    var val = $('#cookbook').val() !== '';
+                    return val;
+                    },
+                },
+            },
+            dish_type_id: { required: true },
+         },
+         // Add bootstrap alert class
+         highlight: function (element, errorClass) {
+             $(element.id).addClass(errorClass);
+         },
+     })
+ })
 
 /**
  * Adds an incredient from the search result to the incredients list
@@ -269,7 +185,6 @@ function generateTable(table, data, alt = "image", width = 100) {
  * @returns no value hides the element in the search result list and add it to the incredients list
  *
  */
-
 function addIncredientToRecipe(incredientId) {
     // Read the input values
     var incredientName = document.getElementById(
@@ -281,7 +196,16 @@ function addIncredientToRecipe(incredientId) {
     var selectedUnitId = units.options[units.selectedIndex].value; // Retreive the selected option.value
     var selectedUnitName = units.options[units.selectedIndex].innerHTML;
 
-    var existingDiv = document.getElementById("incredientsList"); // Div for all inedients belong to the recipe (existing and new ones)
+    var existingDiv = document.getElementById("incredientsList"); // Div for all incredients belong to the recipe (existing and new ones)
+
+
+    // var newLine =
+    //     '<div class="row" id="row' + incredentID + '"> \
+    //      <div class="col-md3"><p>' + incredientName + '</p></div>';
+    //     newLine +=
+    //          '<input type="hidden" name="incredient_ids[]" id="incredient' + incredientId + ' value="' + incredientId + '"';
+    //     newLine += '<div class="col-auto"><input type="number" step="0.1" lang="de" name="quantities []" id="quantitiy' + incredientId + '" value ="' + quantity + '"style="width:100px"></div>';
+    //     newLine += '<div class="col-auto"><select name="unit_ids[]" id="unit' + incredientId + '">';
 
     // Create the div element for the new line
     var rowDiv = document.createElement("div");

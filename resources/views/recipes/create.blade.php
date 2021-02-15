@@ -6,14 +6,14 @@
 </header>
 
 <main>
-    <form method="POST" action="{{ route("recipes.store") }}" enctype="multipart/form-data">
+    <form method="POST" id="recipeForm" action="{{ route("recipes.store") }}" enctype="multipart/form-data">
 
         @csrf
 
         <div class="form-group">
             <label for="recipeName">Rezept *</label>
             <input type="text" class="form-control" name="name" id="recipeName" placeholder="Rezeptname"
-                value="{{ old('name') }}">
+                value="{{ old('name') }}" required>
             @error('name')
             <div class="alert alert-danger">{{ $message }}</div>
             @enderror
@@ -54,7 +54,7 @@
             <p>Art *</p>
             @foreach($dish_types->sortBy('de') as $dish_type)
                 <input type="radio" name="dish_type_id" id="{{ $dish_type->de }}" value="{{ $dish_type->id }}"
-                    {{ old('dish_type_id') == $dish_type->id ? 'checked' : '' }}>
+                    {{ old('dish_type_id') == $dish_type->id ? 'checked' : '' }} required>
                     <label for="{{ $dish_type->de }}">{{ $dish_type->de }}</label>
                 @endforeach
                 @error('dish_type_id')
@@ -66,7 +66,7 @@
             <p>Gang *</p>
             @foreach($courses->sortBy('id') as $course)
                 <input type="radio" name="course_id" id="{{ $course->id }}" value="{{ $course->id }}"
-                    {{ old('course_id') == $course->id ? 'checked' : '' }}>
+                    {{ old('course_id') == $course->id ? 'checked' : '' }} required>
                     <label for="{{ $course->id }}">{{ $course->de }}</label>
                 @endforeach
                 @error('course_id')
@@ -88,7 +88,7 @@
 
     <div>
         <br>
-        <Input type="submit" class="btn btn-primary" value="Speichern" onclick="return confirm('Alle Zutaten eingegeben?')">
+        <Input type="submit" class="btn btn-primary" value="Speichern" id="submitCreateRecipeForm" onclick="return confirm('Alle Zutaten eingegeben?')">
         <input type="button" class="btn btn-dark" onclick="location.href='{{ route('recipes') }}'; return false;" value="Abbrechen">
     </div><br>
     </form>

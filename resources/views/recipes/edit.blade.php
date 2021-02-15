@@ -6,7 +6,7 @@
 </header>
 
 <main>
-    <form method="POST" action="{{ route("recipes.update", [$recipe->id]) }}" enctype="multipart/form-data">
+    <form method="POST" id="recipeForm" action="{{ route("recipes.update", [$recipe->id]) }}" enctype="multipart/form-data">
 
         @csrf
         @method('PUT')
@@ -14,7 +14,7 @@
         <div class="form-group">
             <label for="recipeName">Rezept</label>
             <input type="text" class="form-control" name="name" id="recipeName" placeholder="Rezeptname"
-                value="{{ $recipe->name }}">
+                value="{{ $recipe->name }}" required>
                 @error('name')
                 <div class="alert alert-danger">{{ $message }}</div>
                 @enderror
@@ -53,8 +53,8 @@
         <div>
             @foreach($dish_types->sortBy('de') as $dish_type)
             <input type="radio" name="dish_type_id" id="{{ $dish_type->de }}" value="{{ $dish_type->id }}"
-                {{ $recipe->dish_type_id == $dish_type->id ? 'checked' : '' }}>
-            <label for="{{ $dish_type->de }}">{{ $dish_type->de }}</label>
+                {{ $recipe->dish_type_id == $dish_type->id ? 'checked' : '' }} required>
+            <label for="{{ $dish_type->id }}">{{ $dish_type->de }}</label>
             @endforeach
             @error('dish_type_id')
             <div class="alert alert-danger">{{ $message }}</div>
@@ -64,7 +64,7 @@
         <div>
             @foreach($courses->sortBy('id') as $course)
             <input type="radio" name="course_id" id="{{ $course->de }}" value="{{ $course->id }}"
-                {{ $recipe->course_id == $course->id ? 'checked' : '' }}>
+                {{ $recipe->course_id == $course->id ? 'checked' : '' }} required>
             <label for="{{ $course->id }}">{{ $course->de }}</label>
             @endforeach
             @error('course_id')

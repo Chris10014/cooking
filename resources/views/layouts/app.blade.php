@@ -18,7 +18,6 @@
 
 
 
-
     <title>@yield('title', "Rezepte")</title>
 </head>
 <body>
@@ -73,6 +72,7 @@
             integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous">
         </script>
         <script src="{{ asset('/public/js/cooking.js') }}" type="text/javascript" defer></script>
+        <script src="{{ asset('/public/js/jquery.validate.min.js') }}" type="text/javascript" defer></script>
 
     </div>
 </body>
