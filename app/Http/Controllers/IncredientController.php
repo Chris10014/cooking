@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Incredient;
 use App\Models\Food_group;
 use App\Models\Grocery_division;
-use App\Models\unit;
+use App\Models\Unit;
 use Illuminate\Validation\Rule;
 
 class IncredientController extends Controller
