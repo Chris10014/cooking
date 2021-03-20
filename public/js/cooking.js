@@ -43,69 +43,72 @@ function ajax(url, cFunction, method = "GET") {
  * Search for recipes as jQuery function
  *
  */
+$("#searchRecipes, #searchDishType").on('change keyup', function () {
+    $.getJSON(
+        "/cooking/recipes/search/" + $("#searchRecipes").val() + "/" + $("#searchDishType").val(), function (data) {
 
-$("#searchRecipes").keyup(function () {
-    $.getJSON("/cooking/recipes/search/" + $(this).val(), function (data) {
+            $("#recipeTableBody").empty();
+            $("#message").hide().removeClass("alert alert-danger").html("");
 
-        $("#recipeTableBody").empty();
-        $("#message").hide().removeClass("alert alert-danger").html("");
-
-        if (typeof data == "object") {
-            var recipes = data;
-            for (i = 0; i < recipes.length; i++) {
-                var recipe = recipes[i];
-                $.each(recipe, function (key, val) {
-                    window.console &&
-                        console.log("key: " + key + " val: " + val + "\n");
-                });
-            }
-            var tableBody = "";
-            for (i = 0; i < recipes.length; i++) {
-                recipe = recipes[i];
-                dishType = recipe.dish_type;
-                cookbook = recipe.cookbook;
-                tableBody +=
-                    '<tr><td> \
+            if (typeof data == "object") {
+                var recipes = data;
+                for (i = 0; i < recipes.length; i++) {
+                    var recipe = recipes[i];
+                    $.each(recipe, function (key, val) {
+                        window.console &&
+                            console.log("key: " + key + " val: " + val + "\n");
+                    });
+                }
+                var tableBody = "";
+                for (i = 0; i < recipes.length; i++) {
+                    recipe = recipes[i];
+                    dishType = recipe.dish_type;
+                    cookbook = recipe.cookbook;
+                    tableBody +=
+                        '<tr><td> \
                 <img src="/cooking/' +
-                    recipe.recipe_image +
-                    '" onerror=src="/cooking/storage/app/recipe_images/mealPlaceholder.jpg" alt="Gericht" width="100"></td>';
-                tableBody +=
-                    '<td><p><span><i class="' +
-                    dishType.glyphicon_fontawesome +
-                    '" ></i></span>' +
-                    " " +
-                    recipe.name +
-                    " ";
+                        recipe.recipe_image +
+                        '" onerror=src="/cooking/storage/app/recipe_images/mealPlaceholder.jpg" alt="Gericht" width="100"></td>';
+                    tableBody +=
+                        '<td><p><span><i class="' +
+                        dishType.glyphicon_fontawesome +
+                        '" ></i></span>' +
+                        " " +
+                        recipe.name +
+                        " ";
 
-                if (cookbook !== null) {
-                    tableBody += cookbook.title + " S. " + recipe.page + "</p>";
-                }
-
-                incredients = recipe.incredients;
-                if (incredients.length != 0) {
-                    tableBody += "<p><details><summary>Zutaten</summary><ul>";
-                    for (k = 0; k < incredients.length; k++) {
+                    if (cookbook !== null) {
                         tableBody +=
-                            "<li>" + incredients[k].incredient_de + "</li>";
+                            cookbook.title + " S. " + recipe.page + "</p>";
                     }
-                    tableBody += "</ul></details></p>";
-                } else {
-                    tableBody += "<i>keine Zutaten eingetragen</i>";
-                }
-                tableBody +=
-                    '</td><td><a href="/cooking/recipes/' +
-                    recipe.id +
-                    '/edit"><span><i class="fas fa-pen"></i></span></a></td></tr>';
-            }
 
-            $("#recipeTableBody").append(tableBody);
-        } else {
-            $("#message")
-                .addClass("alert alert-danger")
-                .html("<p>Keine passenden Ergebnisse gefunden.</p>")
-                .show();
+                    incredients = recipe.incredients;
+                    if (incredients.length != 0) {
+                        tableBody +=
+                            "<p><details><summary>Zutaten</summary><ul>";
+                        for (k = 0; k < incredients.length; k++) {
+                            tableBody +=
+                                "<li>" + incredients[k].incredient_de + "</li>";
+                        }
+                        tableBody += "</ul></details></p>";
+                    } else {
+                        tableBody += "<i>keine Zutaten eingetragen</i>";
+                    }
+                    tableBody +=
+                        '</td><td><a href="/cooking/recipes/' +
+                        recipe.id +
+                        '/edit"><span><i class="fas fa-pen"></i></span></a></td></tr>';
+                }
+
+                $("#recipeTableBody").append(tableBody);
+            } else {
+                $("#message")
+                    .addClass("alert alert-danger")
+                    .html("<p>Keine passenden Ergebnisse gefunden.</p>")
+                    .show();
+            }
         }
-    });
+    );
 });
 
 

@@ -7,14 +7,31 @@
     <h1>Rezepte</h1>
 </header>
 <main>
-    <p>Rezept hinzufügen <a href="{{ route('recipes.create') }}"><span><i class="fas fa-plus-square"></i></span></a></p>
-    <label for="searchRecipes">Rezepte suchen <span class="form-control-feedback"><i
-                class="fas fa-search"></i></span></label>
-    <input type="text" class="form-control" name="recipe" id="searchRecipes" placeholder="Suchtext eingeben für Rezept oder Zutat">
-    </div><br>
+    <section>
+        <p>Rezept hinzufügen <a href="{{ route('recipes.create') }}"><span><i class="fas fa-plus-square"></i></span></a></p>
+        <p>Rezepte suchen <span class="form-control-feedback"><i class="fas fa-search"></i></span></p>
+        <div class="row">
+            <div class="col-md-3">
+                <label for="searchRecipes">Rezeptenamen oder Zutat</label>
+                <input type="text" class="form-control" name="recipe" id="searchRecipes"
+                    placeholder="Suchtext eingeben für Rezept oder Zutat">
+            </div>
+            <div class="col-md-2">
+                <label for="searchDishType">Art</label>
+                <select class="custom-select" id="searchDishType" name="dishType">
+                    <option value=""></option>
+                    @foreach($dishTypes->sortBy('de') as $dishType)
+                    <option value="{{ $dishType->de }}">
+                        {{ $dishType->de }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+    </section>
     <div id="message">
         {{-- Div to display message if no result found --}}
     </div><br>
+    {{-- @if(isset($recipes)) --}}
     <section>
         <table class="table table-striped table-dark" id="recipeTable">
             <thead>
@@ -65,6 +82,9 @@
                 @endforeach
             </tbody>
         </table>
+        {{-- <!--https://github.com/laravel/framework/issues/19441-->
+        <p>{{ $recipes->render() }}</p>
+        @endif --}}
     </section>
 
     <p><strong>Legende</strong><br><i class="fas fa-drumstick-bite"></i> Fleisch, <i class="fas fa-carrot"></i> vegetarisch, <i class="fas fa-seedling"></i> vegan, <i class="fas fa-fish"></i> Fisch</p>

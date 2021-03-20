@@ -46,7 +46,7 @@ Route::get("cookbooks/{cookbook}", [CookbookController::Class, "show"])->name('c
 Route::get("recipes", [RecipeController::Class, "index"])->name('recipes');
 Route::post("recipes", [RecipeController::Class, "store"])->name('recipes.store');
 Route::get("recipes/create", [RecipeController::Class, "create"])->name('recipes.create');
-Route::get("recipes/search/{str}", [RecipeController::Class, "search"])->name('recipes.search');
+Route::get("recipes/search/{str}/{dishType?}", [RecipeController::Class, "search"])->name('recipes.search');
 Route::get("recipes/deleteIncredientFromRecipe/{recipe_id}/{incredient_id}", [RecipeController::Class, "deleteIncredientFromRecipe"])->name('recipes.deleteIncredientFromRecipe');
 Route::delete("recipes/{id}", [RecipeController::Class, "destroy"])->name('recipes.delete');
 Route::get("recipes/{recipe}", [RecipeController::Class, "show"])->name('recipes.show');

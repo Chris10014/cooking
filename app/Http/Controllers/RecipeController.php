@@ -31,8 +31,9 @@ class RecipeController extends Controller
     {
         $recipes = Recipe::all();
         $units = Unit::all('id', 'abbreviation');
+        $dishTypes = Dish_type::all('de');
 
-        return view("recipes.index", compact('recipes', 'units'));
+        return view("recipes.index", compact('recipes', 'units', 'dishTypes'));
     }
 
     /**
@@ -252,19 +253,27 @@ class RecipeController extends Controller
         return $replaced;
     }
 
-    public function search($string) {
-
+    public function search($string, $dishType_de = "%")
+    {
         $recipes = Recipe::with(['cookbook', 'incredients', 'dish_type'])
-            ->where('name', 'LIKE', "%" . $string . "%")
+
+        ->where(function ($q) use ($string) {
+            $q->where('recipes.name', 'LIKE', "%" . $string . "%")
+                ->orWhereHas('incredients', function ($q) use ($string) {
+                    $q->where('incredient_de', 'LIKE', '%' . $string . '%');
+                });
+        })
+            ->whereHas('dish_type', function ($q) use ($dishType_de) {
+                $q->where('de', 'LIKE', $dishType_de);
+            })
+            ->orderBy('recipes.name', 'asc')
             ->get();
 
-        // $units = Unit::all('id', 'abbreviation');
-        if(count($recipes) > 0) {
+        if (count($recipes) > 0) {
             echo json_encode($recipes);
         } else {
             $_SESSION['message']  = "Keine passenden Rezepte gefunden.";
             echo "false";
         }
-
     }
 }
